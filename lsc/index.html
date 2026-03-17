@@ -133,6 +133,10 @@ nav .breadcrumb a:hover { color: var(--text-primary); }
 .experiment-text {
   font-size: 15px; line-height: 1.75; color: var(--text-secondary);
 }
+.experiment-image {
+  width: 100%; max-height: 50vh; object-fit: cover; border-radius: 2px;
+  margin: 24px 0 8px;
+}
 .info-section { margin-bottom: 48px; }
 .info-label {
   font-family: var(--font-heading); font-weight: 600; font-size: 11px;
@@ -183,17 +187,8 @@ footer a:hover { color: var(--accent-warm); }
   <h1 class="page-title">Latent States Camp</h1>
   <div class="page-meta"><span class="accent">2023&ndash;present</span> &middot; Waking Life Festival, Portugal</div>
 
-  <!-- TODO: need hero image — Latent States Camp at Waking Life festival, 2024 -->
-  <div class="hero-image">
-    <div class="placeholder-grid">
-      <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-      <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-      <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-      <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-      <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-      <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-    </div>
-    <span class="label">Latent States Camp &middot; Waking Life 2024</span>
+  <div class="hero-image" style="aspect-ratio:auto;border:none;background:none;">
+    <img src="../assets/lsc25-camp-overview-outdoor.jpg" alt="Latent States Camp outdoor experiment stations at Waking Life 2025" style="width:100%;max-height:70vh;object-fit:cover;border-radius:2px;" loading="lazy">
   </div>
 
   <div class="description">
@@ -210,14 +205,17 @@ footer a:hover { color: var(--accent-warm); }
       <div class="experiment">
         <div class="experiment-name">Seeing</div>
         <div class="experiment-text">Eye-tracking and visual perception under psychedelic conditions. Finding: reduced eye movement is linked to more visual hallucinations. Psychedelics amplify internal visual processes, they don't simply add noise.</div>
+        <img src="../assets/lsc25-altered-reflections-station.jpg" alt="Researcher at the Altered Reflections eye-tracking station" class="experiment-image" loading="lazy">
       </div>
       <div class="experiment">
         <div class="experiment-name">Hearing</div>
         <div class="experiment-text">VR auditory detection. Finding: psychedelics improved detection accuracy rather than increasing false alarms. The signal gets clearer, not noisier.</div>
+        <img src="../assets/lsc25-hearing-experiment-outdoor.jpg" alt="Outdoor hearing experiment station at the Latent States Camp" class="experiment-image" loading="lazy">
       </div>
       <div class="experiment">
         <div class="experiment-name">Tasting</div>
         <div class="experiment-text">Does the color of a cup change how things taste? Social sharing and flavor perception in naturalistic conditions.</div>
+        <img src="../assets/lsc25-taste-experiment-vials.jpg" alt="Taste experiment with sample vials at the outdoor station" class="experiment-image" loading="lazy">
       </div>
       <div class="experiment">
         <div class="experiment-name">Soundwalk</div>
