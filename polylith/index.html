@@ -95,22 +95,8 @@ nav .breadcrumb a:hover { color: var(--text-primary); }
   color: var(--text-muted); margin-bottom: 48px;
 }
 .page-meta .accent { color: var(--accent); }
-.hero-image {
-  width: 100%; aspect-ratio: 21/9; background: var(--bg-card);
-  border: 1px solid var(--border); border-radius: 2px;
-  display: flex; align-items: center; justify-content: center;
-  margin-bottom: 56px; position: relative; overflow: hidden;
-}
-.hero-image .placeholder-grid {
-  position: absolute; inset: 0;
-  display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(3, 1fr);
-  gap: 1px; padding: 1px; opacity: 0.35;
-}
-.hero-image .cell { background: var(--bg-raised); border-radius: 1px; }
-.hero-image .label {
-  position: relative; z-index: 1;
-  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-ghost);
-}
+.hero-image { margin: 0 0 56px; width: 100%; }
+.hero-image img { width: 100%; max-height: 70vh; object-fit: cover; border-radius: 2px; }
 .description {
   font-size: 18px; line-height: 1.85; color: var(--text-secondary);
   margin-bottom: 56px; max-width: 720px;
@@ -165,18 +151,7 @@ footer a:hover { color: var(--accent-warm); }
   <h1 class="page-title">Polylith</h1>
   <div class="page-meta"><span class="accent">2022</span> &middot; Metamersion, Champalimaud Foundation</div>
 
-  <!-- TODO: need hero image — Polylith nature triptych installation, Metamersion 2022 -->
-  <div class="hero-image">
-    <div class="placeholder-grid">
-      <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-      <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-      <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-      <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-      <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-      <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-    </div>
-    <span class="label">Polylith &middot; Metamersion 2022 &middot; interactive nature triptych</span>
-  </div>
+  <figure class="hero-image"><img src="../assets/cf-metamersion-polylith.png" alt="Polylith installation at Metamersion, Champalimaud Foundation" loading="lazy"></figure>
 
   <div class="description">
     A triptych of interactive installations simulating deep connection to naturalistic environments. Body-tracking technology enables parallax simulation &mdash; as you move, the world moves with you. Spatial soundscapes shift with your position. Three windows into forests, oceans, landscapes that respond to your presence. The feeling of being inside a place that knows you're there.
