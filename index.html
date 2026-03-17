@@ -4,128 +4,919 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Latent States</title>
+<meta name="description" content="Latent States — art, science, perception. Interactive installation art by Zach Mainen.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Grotesk:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
+/* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* ── Variables ── */
+:root {
+  --bg: #0a0a0a;
+  --bg-raised: #111110;
+  --bg-card: #161614;
+  --text-primary: #e8e4e0;
+  --text-secondary: #908882;
+  --text-muted: #585450;
+  --text-ghost: #2a2826;
+  --accent-warm: #a89888;
+  --accent-highlight: #c8c0b8;
+  --border: #1e1c1a;
+  --border-light: #2a2826;
+  --font-heading: 'Syne', sans-serif;
+  --font-body: 'Space Grotesk', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
 body {
-  background: #0a0a0a;
-  color: #e8e4e0;
-  font-family: 'Space Grotesk', sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Navigation ── */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 0 32px;
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: transform 0.3s ease;
+}
+
+nav .nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+}
+
+nav .logo {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+nav .nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+
+nav .nav-links a {
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+nav .nav-links a:hover {
+  color: var(--text-primary);
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 20px;
+  height: 1px;
+  background: var(--text-secondary);
+  margin: 5px 0;
+  transition: all 0.3s;
+}
+
+/* ── Sections ── */
+section {
+  padding: 0 32px;
+}
+
+.section-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ── Hero ── */
+.hero {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 60px 32px;
-  overflow-x: hidden;
-}
-
-.container {
-  max-width: 720px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
-}
-
-h1 {
-  font-family: 'Syne', sans-serif;
-  font-weight: 800;
-  font-size: clamp(56px, 12vw, 120px);
-  letter-spacing: -0.03em;
-  line-height: 0.92;
   text-align: center;
-  margin-bottom: 28px;
-  background: linear-gradient(135deg, #e8e4e0 0%, #8a8078 100%);
+  padding-top: 64px;
+}
+
+.hero h1 {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: clamp(64px, 14vw, 160px);
+  letter-spacing: -0.04em;
+  line-height: 0.88;
+  margin-bottom: 32px;
+  background: linear-gradient(135deg, #e8e4e0 0%, #8a8078 60%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.subtitle {
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 300;
-  font-size: clamp(13px, 2vw, 16px);
-  letter-spacing: 0.32em;
+.hero .tagline {
+  font-size: clamp(13px, 1.8vw, 15px);
+  letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: #585450;
-  margin-bottom: 72px;
-  text-align: center;
+  color: var(--text-muted);
+  margin-bottom: 64px;
 }
 
-.divider {
-  width: 48px;
-  height: 1px;
-  background: #2a2826;
-  margin-bottom: 72px;
-}
-
-.statement {
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 300;
-  font-size: clamp(17px, 2.2vw, 21px);
-  line-height: 1.8;
-  color: #908882;
-  text-align: center;
-  max-width: 540px;
+.hero .statement {
+  font-size: clamp(18px, 2.4vw, 24px);
+  line-height: 1.75;
+  color: var(--text-secondary);
+  max-width: 600px;
   margin-bottom: 80px;
 }
 
-.statement em {
-  color: #c8c0b8;
+.hero .statement em {
+  color: var(--accent-highlight);
   font-style: normal;
 }
 
-.credit {
-  font-size: clamp(12px, 1.4vw, 14px);
-  font-weight: 300;
-  letter-spacing: 0.06em;
-  color: #484440;
+.scroll-indicator {
+  width: 1px;
+  height: 48px;
+  background: linear-gradient(to bottom, var(--border-light), transparent);
+  animation: pulse-down 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse-down {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* ── Divider ── */
+.section-divider {
+  width: 48px;
+  height: 1px;
+  background: var(--border-light);
+  margin: 0 auto;
+}
+
+/* ── About ── */
+.about {
+  padding-top: 140px;
+  padding-bottom: 140px;
+}
+
+.about .section-inner {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.about .section-label {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding-top: 8px;
+}
+
+.about-text p {
+  font-size: 17px;
+  line-height: 1.85;
+  color: var(--text-secondary);
+  margin-bottom: 28px;
+}
+
+.about-text p:last-child {
+  margin-bottom: 0;
+}
+
+.about-text strong {
+  color: var(--accent-highlight);
+  font-weight: 400;
+}
+
+/* ── Projects ── */
+.projects {
+  padding-top: 100px;
+  padding-bottom: 140px;
+}
+
+.projects .section-header {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 80px;
   margin-bottom: 80px;
 }
 
-.credit a {
-  color: #686058;
-  text-decoration: none;
-  border-bottom: 1px solid #2a2826;
-  transition: color 0.3s, border-color 0.3s;
+.projects .section-label {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding-top: 4px;
 }
 
-.credit a:hover {
-  color: #a89888;
-  border-color: #a89888;
+.projects .section-desc {
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--text-secondary);
+  max-width: 520px;
 }
 
-footer {
+/* ── Project Card ── */
+.project-card {
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 48px;
+  transition: border-color 0.4s;
+}
+
+.project-card:hover {
+  border-color: #2e2c28;
+}
+
+.project-image {
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  background: var(--bg-card);
+  position: relative;
+  overflow: hidden;
+}
+
+.project-image .placeholder-grid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 1px;
+  padding: 1px;
+  opacity: 0.35;
+}
+
+.placeholder-grid .cell {
+  background: var(--bg-raised);
+  border-radius: 1px;
+}
+
+.project-image .overlay-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.overlay-text .img-label {
   font-size: 11px;
-  font-weight: 300;
   letter-spacing: 0.2em;
-  color: #2a2826;
+  text-transform: uppercase;
+  color: var(--text-ghost);
+}
+
+.overlay-text .img-icon {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border-light);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay-text .img-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--text-ghost);
+  fill: none;
+  stroke-width: 1.5;
+}
+
+.project-body {
+  padding: 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+}
+
+.project-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(28px, 4vw, 40px);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.project-year {
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.project-tags span {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  padding: 4px 12px;
+  border-radius: 1px;
+}
+
+.project-desc {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+.project-desc p {
+  margin-bottom: 20px;
+}
+
+.project-desc p:last-child {
+  margin-bottom: 0;
+}
+
+/* ── Architecture Diagram ── */
+.architecture {
+  padding: 48px;
+  padding-top: 0;
+  border-top: 1px solid var(--border);
+}
+
+.arch-label {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+  padding-top: 32px;
+}
+
+.arch-flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: wrap;
+  padding: 24px 0;
+}
+
+.arch-node {
+  padding: 14px 24px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+  background: var(--bg-raised);
   text-align: center;
+  min-width: 120px;
+}
+
+.arch-node .node-title {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--accent-warm);
+  margin-bottom: 4px;
+}
+
+.arch-node .node-detail {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.arch-arrow {
+  color: var(--text-ghost);
+  font-size: 18px;
+  padding: 0 12px;
+  flex-shrink: 0;
+}
+
+/* ── Gallery Placeholder ── */
+.gallery-section {
+  padding-top: 100px;
+  padding-bottom: 140px;
+}
+
+.gallery-section .section-header {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 80px;
+  margin-bottom: 80px;
+}
+
+.gallery-section .section-label {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.gallery-section .section-desc {
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--text-secondary);
+  max-width: 520px;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.gallery-cell {
+  aspect-ratio: 1;
+  background: var(--bg-card);
+  position: relative;
+  overflow: hidden;
+  transition: background 0.4s;
+}
+
+.gallery-cell:hover {
+  background: var(--bg-raised);
+}
+
+.gallery-cell:nth-child(1) { aspect-ratio: 1; }
+.gallery-cell:nth-child(2) { aspect-ratio: 1; grid-column: span 2; }
+.gallery-cell:nth-child(3) { aspect-ratio: 4/3; }
+.gallery-cell:nth-child(4) { aspect-ratio: 4/3; grid-column: span 2; }
+
+.gallery-cell .cell-label {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-ghost);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.gallery-cell:hover .cell-label {
+  opacity: 1;
+}
+
+/* ── Contact ── */
+.contact {
+  padding-top: 100px;
+  padding-bottom: 140px;
+}
+
+.contact .section-inner {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 80px;
+}
+
+.contact .section-label {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding-top: 8px;
+}
+
+.contact-content {
+  max-width: 480px;
+}
+
+.contact-content p {
+  font-size: 17px;
+  line-height: 1.85;
+  color: var(--text-secondary);
+  margin-bottom: 40px;
+}
+
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.contact-links a {
+  font-size: 15px;
+  color: var(--accent-warm);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 4px;
+  display: inline-block;
+  transition: color 0.3s, border-color 0.3s;
+  align-self: flex-start;
+}
+
+.contact-links a:hover {
+  color: var(--text-primary);
+  border-color: var(--accent-warm);
+}
+
+/* ── Footer ── */
+footer {
+  padding: 48px 32px;
+  border-top: 1px solid var(--border);
+}
+
+footer .footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+footer .footer-left {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  color: var(--text-ghost);
+}
+
+footer .footer-right {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--text-ghost);
+}
+
+footer a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+footer a:hover {
+  color: var(--accent-warm);
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  section {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  nav {
+    padding: 0 20px;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  nav .nav-links {
+    display: none;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(20px);
+    flex-direction: column;
+    padding: 24px 32px;
+    gap: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  nav .nav-links.open {
+    display: flex;
+  }
+
+  .hero h1 {
+    font-size: clamp(48px, 14vw, 100px);
+  }
+
+  .about .section-inner,
+  .contact .section-inner {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .projects .section-header,
+  .gallery-section .section-header {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .project-body {
+    grid-template-columns: 1fr;
+    padding: 28px;
+    gap: 28px;
+  }
+
+  .architecture {
+    padding: 28px;
+  }
+
+  .arch-flow {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .arch-arrow {
+    transform: rotate(90deg);
+    padding: 4px 0;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .gallery-cell:nth-child(2) { grid-column: span 1; }
+  .gallery-cell:nth-child(4) { grid-column: span 1; }
+
+  footer .footer-inner {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery-cell { aspect-ratio: 16/9 !important; grid-column: span 1 !important; }
 }
 </style>
 </head>
 <body>
 
-<div class="container">
+<!-- ── Navigation ── -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">Latent States</a>
+    <button class="menu-toggle" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── Hero ── -->
+<section class="hero">
   <h1>Latent<br>States</h1>
-  <p class="subtitle">Art &middot; Science &middot; Perception</p>
-  <div class="divider"></div>
+  <p class="tagline">Art &middot; Science &middot; Perception</p>
   <p class="statement">
     What does it mean to perceive, to attend, to be observed?
     <em>The boundary between observer and observed dissolves
     when the artwork watches you back.</em>
-    Neuroscience meets installation art &mdash;
-    reactive creatures, living systems,
-    the space where attention becomes visible.
   </p>
-  <p class="credit">A project by <a href="https://zmainen.org">Zach Mainen</a></p>
-  <footer>latentstates.org &middot; 2026</footer>
-</div>
+  <div class="scroll-indicator"></div>
+</section>
+
+<!-- ── About ── -->
+<section class="about" id="about">
+  <div class="section-divider" style="margin-bottom: 100px;"></div>
+  <div class="section-inner">
+    <div class="section-label">About</div>
+    <div class="about-text">
+      <p>
+        Latent States is the art practice of <strong>Zach Mainen</strong>,
+        a neuroscientist working at the intersection of perception, attention,
+        and interactive systems. Based at the Champalimaud Foundation in Lisbon,
+        the work draws on two decades of research into how brains construct
+        the experience of observing and being observed.
+      </p>
+      <p>
+        The installations are reactive creatures &mdash; living systems that sense
+        their audience and respond. They track, attend, withdraw, and sometimes
+        refuse to engage. They are built from the same computational principles
+        that govern biological nervous systems: sensory correspondence,
+        resource allocation, behavioral state machines.
+      </p>
+      <p>
+        Neuroscience meets installation art in the space where
+        <strong>attention becomes visible</strong>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ── Projects ── -->
+<section class="projects" id="projects">
+  <div class="section-divider" style="margin-bottom: 100px;"></div>
+  <div class="section-header">
+    <div class="section-label">Projects</div>
+    <p class="section-desc">
+      Each project is an autonomous organism &mdash; sensing its environment,
+      making decisions, and expressing internal states through movement and sound.
+    </p>
+  </div>
+  <div class="section-inner">
+
+    <!-- Project: LS9 -->
+    <div class="project-card">
+      <div class="project-image">
+        <div class="placeholder-grid">
+          <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+          <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+          <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+          <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+          <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+          <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+        </div>
+        <div class="overlay-text">
+          <div class="img-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          </div>
+          <span class="img-label">Documentation forthcoming</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <div>
+          <h2 class="project-title">LS9</h2>
+          <p class="project-year">2026 &mdash; In development</p>
+          <div class="project-tags">
+            <span>Interactive</span>
+            <span>Installation</span>
+            <span>Spatial Audio</span>
+            <span>Computer Vision</span>
+          </div>
+        </div>
+        <div class="project-desc">
+          <p>
+            A futuristic alien cephalopod &mdash; multi-armed, autonomous, reactive.
+            It perceives visitors through infrared motion capture and computer vision,
+            tracks them as they move through the space, and reaches toward them
+            with eight articulated tentacle arms.
+          </p>
+          <p>
+            The creature has moods. When curious, it extends toward everything that moves.
+            When tracking, it locks on and follows with precision. When alarmed &mdash;
+            too many people, too sudden a movement &mdash; it retracts, goes still, waits.
+          </p>
+          <p>
+            Each arm has its own voice. Thirteen speakers surround the space, and the
+            creature's spatial audio field shifts as it moves &mdash; a sonic organism
+            that breathes with the architecture.
+          </p>
+        </div>
+      </div>
+      <div class="architecture">
+        <div class="arch-label">System architecture</div>
+        <div class="arch-flow">
+          <div class="arch-node">
+            <div class="node-title">Sensory</div>
+            <div class="node-detail">OptiTrack IR + YOLO</div>
+          </div>
+          <div class="arch-arrow">&rarr;</div>
+          <div class="arch-node">
+            <div class="node-title">Brain</div>
+            <div class="node-detail">Track &middot; Allocate &middot; Mood</div>
+          </div>
+          <div class="arch-arrow">&rarr;</div>
+          <div class="arch-node">
+            <div class="node-title">Motor</div>
+            <div class="node-detail">Unity &middot; 8 arms &middot; IK</div>
+          </div>
+          <div class="arch-arrow">&rarr;</div>
+          <div class="arch-node">
+            <div class="node-title">Voice</div>
+            <div class="node-detail">13ch spatial audio</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── Gallery ── -->
+<section class="gallery-section" id="gallery">
+  <div class="section-divider" style="margin-bottom: 100px;"></div>
+  <div class="section-header">
+    <div class="section-label">Gallery</div>
+    <p class="section-desc">
+      Process documentation, installation views, and system visualizations.
+    </p>
+  </div>
+  <div class="section-inner">
+    <div class="gallery-grid">
+      <div class="gallery-cell">
+        <span class="cell-label">Installation view</span>
+      </div>
+      <div class="gallery-cell">
+        <span class="cell-label">System visualization</span>
+      </div>
+      <div class="gallery-cell">
+        <span class="cell-label">Arm detail</span>
+      </div>
+      <div class="gallery-cell">
+        <span class="cell-label">Process</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Contact ── -->
+<section class="contact" id="contact">
+  <div class="section-divider" style="margin-bottom: 100px;"></div>
+  <div class="section-inner">
+    <div class="section-label">Contact</div>
+    <div class="contact-content">
+      <p>
+        For exhibitions, collaborations, and inquiries.
+      </p>
+      <div class="contact-links">
+        <a href="mailto:zach@latentstates.org">zach@latentstates.org</a>
+        <a href="https://zmainen.org">zmainen.org</a>
+        <a href="https://github.com/latentstates">github.com/latentstates</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-left">Latent States &middot; 2026</div>
+    <div class="footer-right">Lisbon</div>
+  </div>
+</footer>
+
+<script>
+// Close mobile menu on link click
+document.querySelectorAll('.nav-links a').forEach(function(link) {
+  link.addEventListener('click', function() {
+    document.querySelector('.nav-links').classList.remove('open');
+  });
+});
+
+// Subtle nav hide on scroll down, show on scroll up
+(function() {
+  var lastY = 0;
+  var nav = document.querySelector('nav');
+  window.addEventListener('scroll', function() {
+    var y = window.scrollY;
+    if (y > 200 && y > lastY) {
+      nav.style.transform = 'translateY(-100%)';
+    } else {
+      nav.style.transform = 'translateY(0)';
+    }
+    lastY = y;
+  });
+})();
+</script>
 
 </body>
 </html>
