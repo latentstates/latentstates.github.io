@@ -18,6 +18,7 @@
   --accent: #c4956a;
   --font-heading: 'Syne', sans-serif;
   --font-body: 'Space Grotesk', sans-serif;
+  --gap: 4px;
 }
 
 html { scroll-behavior: smooth; }
@@ -35,86 +36,68 @@ body {
 a { color: var(--text); text-decoration: none; }
 a:hover { color: var(--accent); }
 
-/* ── Hero ── */
-.hero {
-  position: relative;
-  height: 100vh;
-  width: 100%;
-  overflow: hidden;
+/* ── Header ── */
+.site-header {
+  padding: 80px clamp(24px, 5vw, 80px) 0;
+  text-align: center;
 }
 
-.hero img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 40%;
-}
-
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(8,8,8,0.15) 0%,
-    rgba(8,8,8,0) 30%,
-    rgba(8,8,8,0) 50%,
-    rgba(8,8,8,0.7) 85%,
-    rgba(8,8,8,1) 100%
-  );
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  padding-bottom: 12vh;
-}
-
-.hero-title {
+.site-title {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: clamp(36px, 7vw, 72px);
+  font-size: clamp(36px, 7vw, 64px);
   letter-spacing: -0.02em;
   line-height: 1.1;
-  text-align: center;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
-.hero-tagline {
-  font-family: var(--font-body);
+.site-tagline {
   font-weight: 300;
-  font-size: clamp(14px, 1.6vw, 18px);
+  font-size: clamp(14px, 1.6vw, 17px);
   letter-spacing: 0.06em;
   color: var(--text-dim);
+}
+
+/* ── Intro ── */
+.intro {
+  padding: 48px clamp(24px, 5vw, 80px) 64px;
+  display: flex;
+  justify-content: center;
+}
+
+.intro-inner {
+  max-width: 580px;
   text-align: center;
 }
 
-.scroll-line {
-  position: absolute;
-  bottom: 24px;
-  left: 50%;
-  width: 1px;
-  height: 40px;
-  background: var(--text-dim);
-  animation: pulse-down 2.4s ease-in-out infinite;
+.intro-inner p {
+  font-size: clamp(15px, 1.6vw, 17px);
+  line-height: 1.8;
+  color: var(--text-dim);
 }
 
-@keyframes pulse-down {
-  0%, 100% { transform: translateY(0); opacity: 0.3; }
-  50% { transform: translateY(8px); opacity: 0.8; }
+/* ── Mosaic grid ── */
+.mosaic {
+  padding: 0 clamp(12px, 2vw, 40px);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--gap);
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-/* ── Visual panels ── */
-.panel {
+.mosaic-item {
   position: relative;
-  width: 100%;
   overflow: hidden;
+  aspect-ratio: 1 / 1;
 }
 
-.panel-full {
-  height: 80vh;
-  min-height: 500px;
+.mosaic-item.featured {
+  grid-column: span 2;
+  aspect-ratio: 2 / 1;
 }
 
-.panel img {
+.mosaic-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -122,100 +105,72 @@ a:hover { color: var(--accent); }
   transition: transform 0.6s ease;
 }
 
-.panel a {
-  display: block;
-  width: 100%;
-  height: 100%;
+.mosaic-item:hover img {
+  transform: scale(1.05);
 }
 
-.panel a:hover img {
-  transform: scale(1.02);
-}
-
-.panel-caption {
+.mosaic-overlay {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 48px clamp(24px, 5vw, 80px);
-  background: linear-gradient(to top, rgba(8,8,8,0.85) 0%, rgba(8,8,8,0) 100%);
+  inset: 0;
+  background: linear-gradient(to top, rgba(8,8,8,0.8) 0%, rgba(8,8,8,0) 50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 16px 20px;
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.35s ease;
 }
 
-.panel:hover .panel-caption,
-.panel-caption.visible {
+.mosaic-item:hover .mosaic-overlay {
   opacity: 1;
 }
 
-.panel-caption h2 {
+.mosaic-overlay h3 {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: clamp(20px, 3vw, 32px);
+  font-size: 15px;
   letter-spacing: -0.01em;
-  margin-bottom: 4px;
+  color: var(--text);
+  margin-bottom: 2px;
 }
 
-.panel-caption span {
-  font-size: 13px;
+.mosaic-overlay span {
+  font-size: 11px;
   letter-spacing: 0.04em;
   color: var(--text-dim);
 }
 
-/* ── Spacer between panels ── */
-.breath { height: 4px; background: var(--bg); }
-
-/* ── Text section ── */
-.statement {
-  padding: 120px clamp(24px, 5vw, 80px);
-  display: flex;
-  justify-content: center;
-}
-
-.statement-inner {
-  max-width: 600px;
-}
-
-.statement-inner p {
-  font-size: clamp(16px, 1.8vw, 19px);
-  line-height: 1.8;
-  color: var(--text);
-  margin-bottom: 1.5em;
-}
-
-.statement-inner p:last-child { margin-bottom: 0; }
-
 /* ── Project list ── */
 .projects {
-  padding: 80px clamp(24px, 5vw, 80px) 120px;
+  padding: 80px clamp(24px, 5vw, 80px) 100px;
   display: flex;
   justify-content: center;
 }
 
 .projects-inner {
-  max-width: 600px;
+  max-width: 580px;
   width: 100%;
 }
 
 .projects-label {
-  font-size: 12px;
-  letter-spacing: 0.08em;
+  font-size: 11px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-dim);
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 }
 
 .projects-list {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .projects-list li a {
   font-family: var(--font-heading);
   font-weight: 400;
-  font-size: clamp(18px, 2.2vw, 22px);
+  font-size: clamp(17px, 2vw, 21px);
   letter-spacing: -0.01em;
   color: var(--text);
   transition: color 0.2s;
@@ -226,27 +181,27 @@ a:hover { color: var(--accent); }
 .projects-list li .year {
   font-family: var(--font-body);
   font-weight: 300;
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-dim);
-  margin-left: 12px;
+  margin-left: 10px;
 }
 
 /* ── Footer ── */
 footer {
-  padding: 64px clamp(24px, 5vw, 80px);
+  padding: 56px clamp(24px, 5vw, 80px);
   border-top: 1px solid #1a1816;
 }
 
 .footer-inner {
-  max-width: 600px;
+  max-width: 580px;
   margin: 0 auto;
 }
 
 .footer-brand {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 20px;
-  margin-bottom: 24px;
+  font-size: 18px;
+  margin-bottom: 20px;
   color: var(--text-dim);
 }
 
@@ -256,120 +211,183 @@ footer {
   line-height: 1.8;
 }
 
-.footer-line a {
-  color: var(--accent);
-  text-decoration: none;
-}
+.footer-line a { color: var(--accent); }
 .footer-line a:hover { text-decoration: underline; }
 
 .footer-close {
-  margin-top: 48px;
+  margin-top: 40px;
   font-size: 11px;
   letter-spacing: 0.06em;
   color: var(--text-dim);
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
 /* ── Scroll reveal ── */
 .reveal {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transform: translateY(16px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
 }
 .reveal.shown {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* ── Mobile ── */
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .mosaic {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 @media (max-width: 640px) {
-  .panel-full {
-    height: 60vh;
-    min-height: 320px;
+  .mosaic {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0 var(--gap);
   }
-  .panel-caption {
+  .mosaic-overlay {
     opacity: 1;
-    padding: 32px 20px;
+    padding: 10px 12px;
   }
-  .hero-overlay { padding-bottom: 16vh; }
+  .mosaic-overlay h3 { font-size: 13px; }
+  .site-header { padding-top: 48px; }
 }
 
 @media print {
   body { background: #fff; color: #111; }
-  .hero { height: auto; }
-  .panel-full { height: auto; min-height: auto; }
-  .panel img { height: auto; }
-  .scroll-line { display: none; }
+  .mosaic-overlay { opacity: 1; background: none; }
   footer { border-top-color: #ccc; }
 }
 </style>
 </head>
 <body>
 
-<!-- ── Hero ── -->
-<section class="hero">
-  <img src="assets/Latent Space - Sintra_43.jpg" alt="Latent Space I film still — figure and reflection in Sintra forest" fetchpriority="high">
-  <div class="hero-overlay">
-    <h1 class="hero-title">Latent States</h1>
-    <p class="hero-tagline">The hidden worlds within us</p>
+<!-- ── Header ── -->
+<header class="site-header reveal">
+  <h1 class="site-title">Latent States</h1>
+  <p class="site-tagline">The hidden worlds within us</p>
+</header>
+
+<!-- ── Intro ── -->
+<section class="intro reveal">
+  <div class="intro-inner">
+    <p>Art, science, and the spaces where they meet. We build installations, stage encounters between humans and machines, and run experiments in perception at festivals, galleries, and warehouses.</p>
   </div>
-  <div class="scroll-line"></div>
 </section>
 
-<!-- ── Visual panels ── -->
-<div class="breath"></div>
+<!-- ── Mosaic ── -->
+<section class="mosaic reveal">
 
-<section class="panel panel-full reveal">
-  <a href="ls1/">
-    <img src="assets/Latent Space - The Whale AI_43.jpg" alt="Latent Space I — AI-generated whale floating through forest canopy, VR dream sequence" loading="lazy">
-    <div class="panel-caption">
-      <h2>Latent Space I</h2>
-      <span>AI-driven VR film &middot; 2022&ndash;23</span>
-    </div>
+  <!-- Row 1: wide LS1 + 2 squares -->
+  <a href="ls1/" class="mosaic-item featured" data-project="ls1">
+    <img src="assets/mosaic/wide-ls1-whale.jpg" alt="Latent Space I — AI whale floating through forest canopy" loading="lazy">
+    <div class="mosaic-overlay"><h3>Latent Space I</h3><span>AI-driven VR film</span></div>
   </a>
-</section>
-
-<div class="breath"></div>
-
-<section class="panel panel-full reveal">
-  <a href="atavic-forest/">
-    <img src="atavic-forest/assets/mucho-alien-vegetation-033.jpg" alt="Atavic Forest — generative neural landscape, alien vegetation with volcanic terrain" loading="lazy">
-    <div class="panel-caption">
-      <h2>Atavic Forest</h2>
-      <span>Generative installation &middot; 2022&ndash;23</span>
-    </div>
+  <a href="atavic-forest/" class="mosaic-item" data-project="atavic-forest">
+    <img src="assets/mosaic/thumb-af-thermal.jpg" alt="Atavic Forest — thermal fire generative landscape" loading="lazy">
+    <div class="mosaic-overlay"><h3>Atavic Forest</h3><span>Generative installation</span></div>
   </a>
-</section>
-
-<div class="breath"></div>
-
-<section class="panel panel-full reveal">
-  <a href="lsc/">
-    <img src="assets/camp-1.jpg" alt="Latent States Camp — illuminated entrance portal at Waking Life festival, night" loading="lazy">
-    <div class="panel-caption">
-      <h2>Latent States Camp</h2>
-      <span>Science in the wild &middot; 2023&ndash;</span>
-    </div>
+  <a href="superficie/" class="mosaic-item" data-project="superficie">
+    <img src="assets/mosaic/thumb-sup-047.jpg" alt="Superficie Desordem — projected body-scan figure" loading="lazy">
+    <div class="mosaic-overlay"><h3>Superf&iacute;cie Desordem</h3><span>Live A/V</span></div>
   </a>
-</section>
 
-<div class="breath"></div>
-
-<section class="panel panel-full reveal">
-  <a href="superficie/">
-    <img src="superficie/assets/concert-047.jpg" alt="Superficie Desordem — live performance with projected body-scan figure, Champalimaud Foundation" loading="lazy">
-    <div class="panel-caption">
-      <h2>Superf&iacute;cie Desordem</h2>
-      <span>Live A/V performance &middot; 2024</span>
-    </div>
+  <!-- Row 2: 2 squares + wide Atavic -->
+  <a href="ls1/" class="mosaic-item" data-project="ls1">
+    <img src="assets/mosaic/thumb-ls1-dark-eyes.jpg" alt="Latent Space I — dark eyes close-up portrait" loading="lazy">
+    <div class="mosaic-overlay"><h3>Latent Space I</h3><span>Film still</span></div>
   </a>
-</section>
+  <a href="lsc/" class="mosaic-item" data-project="lsc">
+    <img src="assets/mosaic/thumb-camp-tasting.jpg" alt="Latent States Camp — tasting experiment" loading="lazy">
+    <div class="mosaic-overlay"><h3>LS Camp</h3><span>Science in the wild</span></div>
+  </a>
+  <a href="atavic-forest/" class="mosaic-item featured" data-project="atavic-forest">
+    <img src="assets/mosaic/wide-af-alien-veg.jpg" alt="Atavic Forest — alien vegetation with purple smoke" loading="lazy">
+    <div class="mosaic-overlay"><h3>Atavic Forest</h3><span>Mucho Flow generative</span></div>
+  </a>
 
-<!-- ── Statement ── -->
-<section class="statement reveal">
-  <div class="statement-inner">
-    <p>Latent States explores the hidden worlds within us&mdash;through art, science, and the spaces where they meet. We build installations, run experiments, and stage encounters between humans and machines at festivals, galleries, and warehouses. The question at the center: what is it like to experience?</p>
-  </div>
+  <!-- Row 3: wide Camp + 2 squares -->
+  <a href="lsc/" class="mosaic-item featured" data-project="lsc">
+    <img src="assets/mosaic/wide-camp-portal.jpg" alt="Latent States Camp — illuminated entrance portal at night" loading="lazy">
+    <div class="mosaic-overlay"><h3>Latent States Camp</h3><span>Waking Life 2023</span></div>
+  </a>
+  <a href="ls1/" class="mosaic-item" data-project="ls1">
+    <img src="assets/mosaic/thumb-ls1-sintra.jpg" alt="Latent Space I — figure with mirror in Sintra forest" loading="lazy">
+    <div class="mosaic-overlay"><h3>Latent Space I</h3><span>Sintra shoot</span></div>
+  </a>
+  <a href="atavic-forest/" class="mosaic-item" data-project="atavic-forest">
+    <img src="assets/mosaic/thumb-af-mycelium.jpg" alt="Atavic Forest — toxic mycelium macro" loading="lazy">
+    <div class="mosaic-overlay"><h3>Atavic Forest</h3><span>Generative</span></div>
+  </a>
+
+  <!-- Row 4: 4 squares -->
+  <a href="ls1/" class="mosaic-item" data-project="ls1">
+    <img src="assets/mosaic/thumb-ls1-ocean.jpg" alt="Latent Space I — figure facing the ocean" loading="lazy">
+    <div class="mosaic-overlay"><h3>Latent Space I</h3><span>Film still</span></div>
+  </a>
+  <a href="superficie/" class="mosaic-item" data-project="superficie">
+    <img src="assets/mosaic/thumb-sup-024.jpg" alt="Superficie Desordem — live performance" loading="lazy">
+    <div class="mosaic-overlay"><h3>Superf&iacute;cie Desordem</h3><span>Champalimaud</span></div>
+  </a>
+  <a href="ls1/" class="mosaic-item" data-project="ls1">
+    <img src="assets/mosaic/thumb-ls1-beautiful.jpg" alt="Latent Space I — portrait at coastline" loading="lazy">
+    <div class="mosaic-overlay"><h3>Latent Space I</h3><span>Film still</span></div>
+  </a>
+  <a href="atavic-forest/" class="mosaic-item" data-project="atavic-forest">
+    <img src="assets/mosaic/thumb-af-spores.jpg" alt="Atavic Forest — reactor spores" loading="lazy">
+    <div class="mosaic-overlay"><h3>Atavic Forest</h3><span>Generative</span></div>
+  </a>
+
+  <!-- Row 5: 2 squares + wide Superficie -->
+  <a href="ls1/" class="mosaic-item" data-project="ls1">
+    <img src="assets/mosaic/thumb-ls1-mirror.jpg" alt="Latent Space I — figure and reflection" loading="lazy">
+    <div class="mosaic-overlay"><h3>Latent Space I</h3><span>Film still</span></div>
+  </a>
+  <a href="lsc/" class="mosaic-item" data-project="lsc">
+    <img src="assets/mosaic/thumb-camp-seeing.jpg" alt="Latent States Camp — VR seeing experiment" loading="lazy">
+    <div class="mosaic-overlay"><h3>LS Camp</h3><span>Seeing</span></div>
+  </a>
+  <a href="superficie/" class="mosaic-item featured" data-project="superficie">
+    <img src="assets/mosaic/wide-sup-012.jpg" alt="Superficie Desordem — projected body with audience silhouettes" loading="lazy">
+    <div class="mosaic-overlay"><h3>Superf&iacute;cie Desordem</h3><span>Live A/V performance</span></div>
+  </a>
+
+  <!-- Row 6: 4 squares -->
+  <a href="atavic-forest/" class="mosaic-item" data-project="atavic-forest">
+    <img src="assets/mosaic/thumb-af-night.jpg" alt="Atavic Forest — night forest" loading="lazy">
+    <div class="mosaic-overlay"><h3>Atavic Forest</h3><span>Generative</span></div>
+  </a>
+  <a href="ls1/" class="mosaic-item" data-project="ls1">
+    <img src="assets/mosaic/thumb-ls1-sandcastle.jpg" alt="Latent Space I — AI sand castle" loading="lazy">
+    <div class="mosaic-overlay"><h3>Latent Space I</h3><span>AI dream</span></div>
+  </a>
+  <a href="lsc/" class="mosaic-item" data-project="lsc">
+    <img src="assets/mosaic/thumb-camp-submersion.jpg" alt="Latent States Camp — submersion experiment" loading="lazy">
+    <div class="mosaic-overlay"><h3>LS Camp</h3><span>Submersion</span></div>
+  </a>
+  <a href="ls1/" class="mosaic-item" data-project="ls1">
+    <img src="assets/mosaic/thumb-ls1-siori-03.jpg" alt="Latent Space I — Siori Lee portrait" loading="lazy">
+    <div class="mosaic-overlay"><h3>Latent Space I</h3><span>Siori Lee</span></div>
+  </a>
+
+  <!-- Row 7: remaining -->
+  <a href="superficie/" class="mosaic-item" data-project="superficie">
+    <img src="assets/mosaic/thumb-sup-040.jpg" alt="Superficie Desordem — performance moment" loading="lazy">
+    <div class="mosaic-overlay"><h3>Superf&iacute;cie Desordem</h3><span>Live A/V</span></div>
+  </a>
+  <a href="atavic-forest/" class="mosaic-item" data-project="atavic-forest">
+    <img src="assets/mosaic/thumb-af-portal.jpg" alt="Atavic Forest — tube portal" loading="lazy">
+    <div class="mosaic-overlay"><h3>Atavic Forest</h3><span>Generative</span></div>
+  </a>
+  <a href="ls1/" class="mosaic-item" data-project="ls1">
+    <img src="assets/mosaic/thumb-ls1-cube.jpg" alt="Latent Space I — the cube" loading="lazy">
+    <div class="mosaic-overlay"><h3>Latent Space I</h3><span>Film still</span></div>
+  </a>
+  <a href="lsc/" class="mosaic-item" data-project="lsc">
+    <img src="assets/mosaic/thumb-camp-crowd.jpg" alt="Latent States Camp — camp at night" loading="lazy">
+    <div class="mosaic-overlay"><h3>LS Camp</h3><span>Festival</span></div>
+  </a>
+
 </section>
 
 <!-- ── Project list ── -->
