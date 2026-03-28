@@ -4,289 +4,268 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Psiloscope — Latent States</title>
-<meta name="description" content="Collective motion visualization at Boom Festival 2016. One hundred wireless motion sensors worn by dancers create a dynamic three-dimensional visualization of collective movement.">
-<link rel="icon" href="/favicon.ico">
-<link rel="icon" type="image/png" href="/ls-favicon.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<meta name="description" content="A hundred wireless motion sensors distributed across a festival dance floor.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
 :root {
-  --bg: #0a0a0a;
-  --bg-raised: #111110;
-  --bg-card: #161614;
-  --text-primary: #e8e4e0;
-  --text-secondary: #8a8580;
-  --text-muted: #585450;
-  --text-ghost: #2a2826;
-  --accent: #c4956a;
-  --accent-sage: #7a9a8a;
-  --accent-warm: #a89888;
-  --accent-highlight: #c8c0b8;
-  --border: #1e1c1a;
-  --border-light: #2a2826;
+  --bg: #101012;
+  --bg-surface: #18181a;
+  --border: #252528;
+  --text-primary: #d8d8dc;
+  --text-secondary: #a0a0a8;
+  --text-muted: #707078;
+  --accent: #8090a0;
+  --accent-alt: #a0a8b0;
   --font-heading: 'Syne', sans-serif;
   --font-body: 'Space Grotesk', sans-serif;
+  --content-width: 720px;
+  --page-width: 1200px;
 }
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) {
-    --bg: #f4f0ec; --bg-raised: #e8e4e0; --bg-card: #ddd9d5;
-    --text-primary: #1a1816; --text-secondary: #6a6560; --text-muted: #8a8580;
-    --text-ghost: #c8c4c0; --accent: #9a6a42; --accent-sage: #4a7a6a;
-    --accent-warm: #7a6a5a; --accent-highlight: #4a4440;
-    --border: #d8d4d0; --border-light: #c8c4c0;
-  }
-}
-[data-theme="light"] {
-  --bg: #f4f0ec; --bg-raised: #e8e4e0; --bg-card: #ddd9d5;
-  --text-primary: #1a1816; --text-secondary: #6a6560; --text-muted: #8a8580;
-  --text-ghost: #c8c4c0; --accent: #9a6a42; --accent-sage: #4a7a6a;
-  --accent-warm: #7a6a5a; --accent-highlight: #4a4440;
-  --border: #d8d4d0; --border-light: #c8c4c0;
-}
-html { scroll-behavior: smooth; transition: background-color 0.3s, color 0.3s; }
+
+html { scroll-behavior: smooth; }
+
 body {
-  background: var(--bg); color: var(--text-primary);
-  font-family: var(--font-body); font-weight: 300; line-height: 1.7;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
+
+a { color: var(--accent); text-decoration: none; transition: color 0.2s; }
+a:hover { color: var(--accent-alt); }
+
 nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 0 32px;
-  background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--border);
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  background: rgba(16, 16, 18, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
 }
-nav .nav-inner {
-  max-width: 1200px; margin: 0 auto;
-  display: flex; justify-content: space-between; align-items: center; height: 64px;
+.nav-logo {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
 }
-nav .logo {
-  font-family: var(--font-heading); font-weight: 700; font-size: 18px;
-  letter-spacing: -0.02em; color: var(--text-primary); text-decoration: none;
+.nav-links { display: flex; gap: 24px; }
+.nav-links a {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
 }
-nav .breadcrumb { font-size: 13px; color: var(--text-muted); letter-spacing: 0.04em; }
-nav .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.3s; }
-nav .breadcrumb a:hover { color: var(--text-primary); }
-.page { max-width: 960px; margin: 0 auto; padding: 120px 32px 80px; }
-.page-title {
-  font-family: var(--font-heading); font-weight: 800;
-  font-size: clamp(40px, 7vw, 72px); letter-spacing: -0.03em;
-  line-height: 0.95; margin-bottom: 20px;
-  background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 60%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+.nav-links a:hover { color: var(--text-primary); }
+
+.section {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 0 24px;
 }
-.page-subtitle {
-  font-family: var(--font-heading); font-weight: 600; font-size: 20px;
-  letter-spacing: -0.01em; color: var(--text-secondary); margin-bottom: 24px;
+
+.hero-info {
+  padding-top: 64px;
+  padding-bottom: 80px;
 }
-.page-meta {
-  font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--text-muted); margin-bottom: 48px;
-}
-.page-meta .accent { color: var(--accent); }
-.description {
-  font-size: 18px; line-height: 1.85; color: var(--text-secondary);
-  margin-bottom: 56px; max-width: 720px;
-}
-.description p { margin-bottom: 20px; }
-.description p:last-child { margin-bottom: 0; }
-.full-image { width: 100%; margin-bottom: 4px; overflow: hidden; }
-.full-image img { width: 100%; display: block; border-radius: 2px; }
-.full-image:last-of-type { margin-bottom: 56px; }
-.image-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 4px; margin-bottom: 56px;
-}
-.image-grid img { width: 100%; display: block; border-radius: 2px; }
-.image-grid-3 {
-  display: grid; grid-template-columns: 1fr 1fr 1fr;
-  gap: 4px; margin-bottom: 56px;
-}
-.image-grid-3 img { width: 100%; display: block; border-radius: 2px; }
-.section-heading {
-  font-family: var(--font-heading); font-weight: 700; font-size: 28px;
-  letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 32px;
-  margin-top: 80px; color: var(--text-secondary);
-}
-.info-section { margin-bottom: 48px; }
-.info-label {
-  font-family: var(--font-heading); font-weight: 600; font-size: 11px;
-  letter-spacing: 0.25em; text-transform: uppercase; color: var(--text-muted);
+.hero-info h1 {
+  font-family: var(--font-heading);
+  font-size: 56px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--text-primary);
   margin-bottom: 16px;
 }
-.info-text { font-size: 15px; line-height: 1.75; color: var(--text-secondary); }
-.info-text a {
-  color: var(--accent); text-decoration: none;
-  border-bottom: 1px solid var(--border); padding-bottom: 1px;
-  transition: color 0.3s, border-color 0.3s;
+.hero-info .meta-line {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-bottom: 8px;
 }
-.info-text a:hover { color: var(--text-primary); border-color: var(--accent); }
-.divider { width: 48px; height: 1px; background: var(--border-light); margin: 56px 0; }
-.related { display: flex; gap: 16px; flex-wrap: wrap; }
-.related a {
-  font-size: 13px; letter-spacing: 0.08em; color: var(--accent);
-  text-decoration: none; border: 1px solid var(--border); padding: 8px 20px;
-  border-radius: 2px; transition: border-color 0.3s, color 0.3s;
+
+.hero-image {
+  width: 100%;
+  margin-bottom: 0;
 }
-.related a:hover { border-color: var(--accent); color: var(--text-primary); }
-footer { padding: 48px 32px; border-top: 1px solid var(--border); }
-footer .footer-inner {
-  max-width: 1200px; margin: 0 auto;
-  display: flex; justify-content: space-between; align-items: center;
+.hero-image img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  max-height: 70vh;
 }
-footer .footer-left, footer .footer-right { font-size: 12px; letter-spacing: 0.15em; color: var(--text-ghost); }
-footer a { color: var(--text-muted); text-decoration: none; transition: color 0.3s; }
-footer a:hover { color: var(--accent-warm); }
+
+.text-section {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+.text-section h2 {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+.text-section .section-credit {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+}
+.text-section p {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: 1.4em;
+}
+.text-section p:last-child { margin-bottom: 0; }
+
+.credits-grid {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 12px 24px;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.6;
+}
+.credits-grid dt {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  padding-top: 2px;
+}
+.credits-grid dd {
+  color: var(--text-secondary);
+}
+
+.project-nav {
+  max-width: var(--page-width);
+  margin: 120px auto 0;
+  padding: 0 32px 80px;
+}
+.project-nav-inner {
+  display: flex;
+  gap: 32px;
+  border-top: 1px solid var(--border);
+  padding-top: 32px;
+}
+.nav-item {
+  flex: 1;
+  text-decoration: none;
+  transition: opacity 0.3s;
+}
+.nav-item:hover { opacity: 0.8; }
+.nav-direction {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+.nav-project-title {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.nav-item--next { text-align: right; }
+
+footer {
+  padding: 48px 32px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
 @media (max-width: 768px) {
-  .page { padding: 100px 20px 60px; }
   nav { padding: 0 20px; }
-  .image-grid { grid-template-columns: 1fr; }
-  .image-grid-3 { grid-template-columns: 1fr 1fr; }
-  footer .footer-inner { flex-direction: column; gap: 12px; text-align: center; }
+  .hero-info h1 { font-size: 36px; }
+  .hero-info { padding-top: 48px; padding-bottom: 56px; }
+  .text-section { padding-top: 56px; padding-bottom: 56px; }
+  .text-section h2 { font-size: 24px; }
+  .credits-grid {
+    grid-template-columns: 1fr;
+    gap: 4px 0;
+  }
+  .credits-grid dt { padding-top: 12px; }
+  .project-nav { padding: 0 20px 60px; }
+  .project-nav-inner { flex-direction: column; gap: 24px; }
+  .nav-item--next { text-align: left; }
+}
+
+@media (max-width: 480px) {
+  .hero-info h1 { font-size: 30px; }
+  .section { padding: 0 16px; }
 }
 </style>
 </head>
 <body>
-<button id="theme-toggle" aria-label="Toggle light/dark mode" style="position:fixed;top:20px;right:20px;z-index:1000;background:none;border:1px solid var(--border);border-radius:50%;width:32px;height:32px;cursor:pointer;color:var(--text-secondary, var(--text-muted));font-size:14px;display:flex;align-items:center;justify-content:center;transition:border-color 0.3s,color 0.3s;">&#9788;</button>
 
 <nav>
-  <div class="nav-inner">
-    <a href="../" class="logo">LS</a>
-    <div class="breadcrumb">Psiloscope</div>
+  <a href="../index.html" class="nav-logo">LS</a>
+  <div class="nav-links">
+    <a href="../people/index.html">People</a>
+    <a href="../about/index.html">About</a>
   </div>
 </nav>
 
-<div class="page">
-  <h1 class="page-title">Psiloscope</h1>
-  <h2 class="page-subtitle">Collective Motion Visualization</h2>
-  <div class="page-meta"><span class="accent">2016&ndash;2017</span></div>
+<div style="height: 52px;"></div>
 
-  <div class="description">
-    <p>The movements of one hundred dancers control a dynamic three-dimensional visualization, opening a new medium for collective interaction. Trance rituals transform group consciousness. It is thought that music provides a rhythmic driver that increases the coherence between individuals' conscious experience. This is maximized when the kinesthetic experience of one's own body is synchronized with both the music and the visual experience of others' movements.</p>
-    <p>Psytrance producers have used computers and audio technology to explore the power of sound to enhance these experiences and extend them to groups of thousands of people. The potential for visual manipulation to enhance collective conscious experience remains comparatively unexplored, largely because the necessary technology has not been available. Psiloscope seeks to answer the question: if the motion of each individual could be captured, enhanced and visualized, how could this new medium of feedback alter individual and collective experience?</p>
-  </div>
+<div class="hero-image">
+  <img src="../assets/psiloscope-dance.png" alt="Psiloscope concept render — collective dance floor visualization with motion sensors at Boom Festival" loading="lazy">
+</div>
 
-  <h3 class="section-heading">Boom Festival, 2016</h3>
+<div class="section hero-info">
+  <h1>Psiloscope</h1>
+  <div class="meta-line">2016 &middot; Boom Festival, Portugal</div>
+</div>
 
-  <figure class="full-image">
-    <img src="assets/boom-01.jpg" alt="Psiloscope at night — mandala visualization projected onto the Hypnosphere screen, with the control tower, festival-goers, and stars visible" loading="eager">
-  </figure>
+<div class="section text-section">
+  <p>A hundred wireless motion sensors distributed across a festival dance floor. Real-time 3D visualization of collective movement &mdash; the hidden rhythmic structure of a crowd made visible. Built with custom Tuna sensor hardware and the Bonsai visual programming framework. The first Latent States project: bringing laboratory instruments into the place where experience actually happens.</p>
+</div>
 
-  <figure class="full-image">
-    <img src="assets/boom-02.jpg" alt="The Hypnosphere projection screen seen from below — tensioned fabric forming a geometric mandala pattern against blue sky" loading="lazy">
-  </figure>
+<div class="section text-section" style="padding-top: 0;">
+  <h2>Credits</h2>
+  <dl class="credits-grid">
+    <dt>Collaborators</dt>
+    <dd>Gon&ccedil;alo Lopes (NeuroGEARS), Gon&ccedil;alo Guiomar, team of 6</dd>
+    <dt>Context</dt>
+    <dd>Boom Festival 2016</dd>
+  </dl>
+</div>
 
-  <div class="image-grid">
-    <img src="assets/boom-04.jpg" alt="Building the Hypnosphere — the geodesic web structure mid-assembly on the dry Alentejo plain, with sun flare revealing its scale" loading="lazy">
-    <img src="assets/boom-09.jpg" alt="The Hypnosphere's shadow — the structure's geometric pattern cast onto the parched earth of the festival grounds" loading="lazy">
-  </div>
-
-  <figure class="full-image">
-    <img src="assets/boom-05.jpg" alt="Tuna wireless motion sensor worn on a wrist — custom PCB with mandala-patterned case and LED ring, designed to be given to dancers" loading="lazy">
-  </figure>
-
-  <div class="image-grid">
-    <img src="assets/boom-06.jpg" alt="Two Tuna sensors worn on a dancer's arms at night — exposed circuit board and decorated version, LEDs glowing" loading="lazy">
-    <img src="assets/boom-08.jpg" alt="Tuna sensor charging station — sensors mounted on driftwood branches in a custom aluminum rack, showing the scale of the hundred-sensor array" loading="lazy">
-  </div>
-
-  <div class="image-grid">
-    <img src="assets/boom-03.jpg" alt="Night operations — two team members at laptops controlling the real-time visualization from the pallet-built control station" loading="lazy">
-    <img src="assets/boom-10.jpg" alt="Build crew carrying wooden pallets at golden hour to construct the DJ booth, with the festival landscape and Hypnosphere poles behind" loading="lazy">
-  </div>
-
-  <figure class="full-image">
-    <img src="assets/boom-07.jpg" alt="The Psiloscope team — selfie with the Hypnosphere projection screen filling the background" loading="lazy">
-  </figure>
-
-  <h3 class="section-heading">MindCrystal Prototype — Lux Frágil, Lisbon (2017)</h3>
-
-  <figure class="full-image">
-    <img src="assets/lux-01.jpg" alt="Laser oscilloscope waveforms traced on the wall of Lux Frágil — red and green sinusoidal traces with a dancer's silhouette visible in purple haze" loading="lazy">
-  </figure>
-
-  <div class="image-grid">
-    <img src="assets/lux-02.jpg" alt="The MindCrystal control station during performance — laptop running Bonsai visualization software with green laser beams cutting across the dark club" loading="lazy">
-    <img src="assets/lux-03.jpg" alt="Monitor showing real-time Bonsai visualization — green oscilloscope trace of motion data, with laser light visible through the club behind" loading="lazy">
-  </div>
-
-  <figure class="full-image">
-    <img src="assets/lux-04.jpg" alt="The MindCrystal control cockpit — Ableton Live on laptop, Launchpad MIDI controller, power supply, and laser optics, all set up in Lux's balcony" loading="lazy">
-  </figure>
-
-  <div class="image-grid">
-    <img src="assets/lux-07.jpg" alt="Custom laser rig with galvanometer mirrors and RGB diodes suspended from the Lux Frágil ceiling, club space visible below" loading="lazy">
-    <img src="assets/lux-05.jpg" alt="Lab preparation at Champalimaud — team assembling and aligning the multi-laser optical system on a breadboard" loading="lazy">
-  </div>
-
-  <figure class="full-image">
-    <img src="assets/lux-06.jpg" alt="Zach Mainen wiring the laser hardware at an optical bench — soldering and assembling the galvanometer-driven projection system" loading="lazy">
-  </figure>
-
-  <div class="divider"></div>
-
-  <div class="info-section">
-    <div class="info-label">Design Concept</div>
-    <div class="info-text">
-      Each of the one hundred sensors controls the position, movement, orientation, size and color of an icon or cursor on screen. The visualization is inspired by a multi-channel oscilloscope: sensor readings are recorded in sampled 'beats' flowing down the screen, revealing the recent history of motion. A moving camera enhances the impact of the dynamic three-dimensional scene.
-    </div>
-  </div>
-
-  <div class="info-section">
-    <div class="info-label">Technology</div>
-    <div class="info-text">
-      Custom "Tuna" wireless motion sensors (2&times;3 cm microcontroller-based devices) with 9-channel sensory input (accelerometer, gyroscope, magnetometer) operating on a low-latency WiFi network. Video-based tracking system (MESh) provides simultaneous 3D localization. The Bonsai framework handles real-time sensor-to-visualization mapping, allowing flexible remapping and live parameter adjustment. Sensor autonomy: 90–120 minutes. System supports synchronized recording and streaming of up to 100 devices.
-    </div>
-  </div>
-
-  <div class="info-section">
-    <div class="info-label">Collaborators</div>
-    <div class="info-text">
-      Zachary Mainen (concept, visual design, implementation), Gonçalo Lopes (visual design, software architecture, programming), João Frazão (visual design, programming and implementation), Filipe Carvalho (hardware and electronic design), Gil Costa (graphic design), Gonçalo Guiomar, Scott Rennie (site crew)
-    </div>
-  </div>
-
-  <div class="info-section">
-    <div class="info-label">Context</div>
-    <div class="info-text">
-      Part of the Collective Motion Laboratory, Champalimaud Centre for the Unknown, Lisbon. First deployed at Boom Festival 2016 (Idanha-a-Nova, Portugal), then evolved and deployed as MindCrystal at Lux Frágil nightclub, Lisbon (2017). In 2024, the team returned to Boom Festival to conduct interviews with participants as part of Latent States Camp, revisiting the questions that Psiloscope first posed. The project represents a conviction that perception and collective experience could be studied not in spite of the festival context but because of it — bringing laboratory instruments into the place where experience actually happens.
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="info-section">
-    <div class="info-label">Related</div>
-    <div class="related">
-      <a href="../mindcrystal/">MindCrystal</a>
-      <a href="../boom/">Boom</a>
-      <a href="../lsc/">LS Camp</a>
-    </div>
+<div class="project-nav">
+  <div class="project-nav-inner">
+    <div class="nav-item" style="flex: 1;"></div>
+    <a href="../mindcrystal/index.html" class="nav-item nav-item--next">
+      <div class="nav-direction">Next &rarr;</div>
+      <div class="nav-project-title">MindCrystal</div>
+    </a>
   </div>
 </div>
 
-<footer>
-  <div class="footer-inner">
-    <div class="footer-left">Latent States &middot; 2026</div>
-    <div class="footer-right">Lisbon</div>
-  </div>
-</footer>
+<footer>Latent States &middot; Lisbon</footer>
 
-<script>
-(function(){
-  var t=document.getElementById('theme-toggle'),r=document.documentElement;
-  var saved=localStorage.getItem('ls-theme');
-  if(saved){r.setAttribute('data-theme',saved);t.textContent=saved==='light'?'\u263E':'\u2606';}
-  t.addEventListener('click',function(){
-    var current=r.getAttribute('data-theme');
-    var next=current==='light'?'dark':'light';
-    r.setAttribute('data-theme',next);
-    localStorage.setItem('ls-theme',next);
-    t.textContent=next==='light'?'\u263E':'\u2606';
-  });
-})();
-</script>
 </body>
 </html>

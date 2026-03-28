@@ -4,474 +4,752 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Latent States</title>
-<meta name="description" content="Latent States explores the hidden worlds within us — through art, science, and the spaces where they meet.">
-<link rel="icon" href="/favicon.ico">
-<link rel="icon" type="image/png" href="/ls-favicon.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<meta name="description" content="Latent States explores the hidden worlds within us — through science in the wild and exploration through art. 2016–2026.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --bg: #080808;
-  --text: #e8e4e0;
-  --text-dim: #6a6560;
-  --accent: #c4956a;
-  --font-heading: 'Syne', sans-serif;
-  --font-body: 'Space Grotesk', sans-serif;
-  --gap: 4px;
+  --bg: #0a0a0a;
+  --fg: #e8e8e8;
+  --meta: #888;
 }
 
-html { scroll-behavior: smooth; }
+html { font-size: 16px; }
 
 body {
   background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-body);
-  font-weight: 300;
-  line-height: 1.7;
-  overflow-x: hidden;
+  color: var(--fg);
+  font-family: 'Source Serif 4', Georgia, 'Times New Roman', serif;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
-a { color: var(--text); text-decoration: none; }
-a:hover { color: var(--accent); }
+a { color: inherit; text-decoration: none; }
+a:hover { opacity: 0.7; }
 
-/* ── Header ── */
-.site-header {
-  padding: 80px clamp(24px, 5vw, 80px) 0;
-  text-align: center;
-}
-
-.site-title {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: clamp(36px, 7vw, 64px);
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-  margin-bottom: 12px;
-}
-
-.site-tagline {
-  font-weight: 300;
-  font-size: clamp(14px, 1.6vw, 17px);
-  letter-spacing: 0.06em;
-  color: var(--text-dim);
-}
-
-/* ── Intro ── */
-.intro {
-  padding: 48px clamp(24px, 5vw, 80px) 64px;
-  display: flex;
-  justify-content: center;
-}
-
-.intro-inner {
-  max-width: 580px;
-  text-align: center;
-}
-
-.intro-inner p {
-  font-size: clamp(15px, 1.6vw, 17px);
-  line-height: 1.8;
-  color: var(--text-dim);
-}
-
-/* ── Mosaic grid ── */
-.mosaic {
-  padding: 0 clamp(12px, 2vw, 40px);
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--gap);
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.mosaic-item {
+/* ============================
+   Constellation page — single viewport
+   ============================ */
+.constellation-page {
+  width: 100vw;
+  height: 100vh;
   position: relative;
   overflow: hidden;
-  aspect-ratio: 1 / 1;
+  background: var(--bg);
 }
 
-.mosaic-item.featured {
-  grid-column: span 2;
-  aspect-ratio: 2 / 1;
+#flow-canvas {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
 }
 
-.mosaic-item img {
+/* Title — top portion */
+.page-title {
+  position: absolute;
+  top: 8vh;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.page-title h1 {
+  font-family: 'Source Serif 4', serif;
+  font-size: clamp(28px, 3.5vw, 44px);
+  font-variation-settings: "wght" 300;
+  color: #e8e8e8;
+  line-height: 1.2;
+}
+
+.page-title p {
+  font-size: clamp(13px, 1.4vw, 17px);
+  opacity: 0.6;
+  margin-top: 0.5em;
+  font-style: italic;
+}
+
+/* Constellation container */
+.constellation {
+  position: absolute;
+  top: 0; left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.6s ease;
+  z-index: 1;
 }
 
-.mosaic-item:hover img {
-  transform: scale(1.05);
-}
-
-.mosaic-overlay {
+/* Track labels — faint watermarks */
+.track-label {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(8,8,8,0.8) 0%, rgba(8,8,8,0) 50%);
+  font-family: 'Source Serif 4', serif;
+  font-size: 100px;
+  font-variation-settings: "wght" 200;
+  opacity: 0.035;
+  pointer-events: none;
+  user-select: none;
+}
+.track-states { left: 4%; top: 52%; transform: rotate(-4deg); }
+.track-spaces { right: 4%; top: 48%; transform: rotate(3deg); }
+
+/* Project nodes — compact */
+.cnode {
+  position: absolute;
+  z-index: 1;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 16px 20px;
-  opacity: 0;
-  transition: opacity 0.35s ease;
-}
-
-.mosaic-item:hover .mosaic-overlay {
-  opacity: 1;
-}
-
-.mosaic-overlay h3 {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 15px;
-  letter-spacing: -0.01em;
-  color: var(--text);
-  margin-bottom: 2px;
-}
-
-.mosaic-overlay span {
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  color: var(--text-dim);
-}
-
-/* ── Project list ── */
-.projects {
-  padding: 80px clamp(24px, 5vw, 80px) 100px;
-  display: flex;
-  justify-content: center;
-}
-
-.projects-inner {
-  max-width: 580px;
-  width: 100%;
-}
-
-.projects-label {
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-dim);
-  margin-bottom: 28px;
-}
-
-.projects-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 10px;
+  text-decoration: none;
+  color: #e8e8e8;
+  transition: opacity 0.3s;
+  cursor: default;
 }
 
-.projects-list li a {
-  font-family: var(--font-heading);
-  font-weight: 400;
-  font-size: clamp(17px, 2vw, 21px);
-  letter-spacing: -0.01em;
-  color: var(--text);
-  transition: color 0.2s;
+a.cnode { cursor: pointer; }
+
+.cnode-img {
+  width: 72px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 2px;
+  opacity: 0.7;
+  transition: opacity 0.3s, transform 0.3s;
 }
 
-.projects-list li a:hover { color: var(--accent); }
-
-.projects-list li .year {
-  font-family: var(--font-body);
-  font-weight: 300;
-  font-size: 12px;
-  color: var(--text-dim);
-  margin-left: 10px;
+.cnode:hover .cnode-img {
+  opacity: 1;
+  transform: scale(1.1);
 }
 
-/* ── Footer ── */
-footer {
-  padding: 56px clamp(24px, 5vw, 80px);
-  border-top: 1px solid #1a1816;
+.cnode-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
 }
 
-.footer-inner {
-  max-width: 580px;
-  margin: 0 auto;
-}
-
-.footer-brand {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 18px;
-  margin-bottom: 20px;
-  color: var(--text-dim);
-}
-
-.footer-line {
-  font-size: 13px;
-  color: var(--text-dim);
-  line-height: 1.8;
-}
-
-.footer-line a { color: var(--accent); }
-.footer-line a:hover { text-decoration: underline; }
-
-.footer-line strong {
-  font-weight: 400;
-  color: var(--text);
-  display: block;
-  margin-bottom: 4px;
-  margin-top: 12px;
-}
-
-.footer-line:first-child strong { margin-top: 0; }
-
-.footer-close {
-  margin-top: 40px;
-  font-size: 11px;
-  letter-spacing: 0.06em;
-  color: var(--text-dim);
+.cnode-cat {
+  font-family: -apple-system, sans-serif;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   opacity: 0.4;
 }
 
-/* ── Scroll reveal ── */
-.reveal {
-  opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.reveal.shown {
-  opacity: 1;
-  transform: translateY(0);
+.cnode-title {
+  font-family: 'Source Serif 4', serif;
+  font-size: 15px;
+  font-variation-settings: "wght" 400;
+  transition: font-variation-settings 0.2s;
 }
 
-/* ── Responsive ── */
-@media (max-width: 900px) {
-  .mosaic {
-    grid-template-columns: repeat(3, 1fr);
-  }
+.cnode:hover .cnode-title {
+  font-variation-settings: "wght" 700;
 }
 
-@media (max-width: 640px) {
-  .mosaic {
-    grid-template-columns: repeat(2, 1fr);
-    padding: 0 var(--gap);
-  }
-  .mosaic-overlay {
-    opacity: 1;
-    padding: 10px 12px;
-  }
-  .mosaic-overlay h3 { font-size: 13px; }
-  .site-header { padding-top: 48px; }
+.cnode-year {
+  font-size: 10px;
+  opacity: 0.25;
+  font-variant-numeric: tabular-nums;
 }
 
-@media print {
-  body { background: #fff; color: #111; }
-  .mosaic-overlay { opacity: 1; background: none; }
-  footer { border-top-color: #ccc; }
+/* Sibling dimming */
+.constellation.has-hover .cnode { opacity: 0.25; transition: opacity 0.3s; }
+.constellation.has-hover .cnode:hover { opacity: 1; }
+
+/* Filtered-out nodes */
+.cnode.filtered-out { display: none; }
+
+/* ============================
+   Drift animations
+   ============================ */
+@keyframes float-1 {
+  0%, 100% { transform: translate(0, 0); }
+  33% { transform: translate(4px, -3px); }
+  66% { transform: translate(-3px, 4px); }
+}
+@keyframes float-2 {
+  0%, 100% { transform: translate(0, 0); }
+  33% { transform: translate(-5px, 3px); }
+  66% { transform: translate(3px, -4px); }
+}
+@keyframes float-3 {
+  0%, 100% { transform: translate(0, 0); }
+  33% { transform: translate(3px, 5px); }
+  66% { transform: translate(-4px, -3px); }
+}
+
+.cnode:nth-child(3n+1) { animation: float-1 25s ease-in-out infinite; }
+.cnode:nth-child(3n+2) { animation: float-2 30s ease-in-out infinite; }
+.cnode:nth-child(3n)   { animation: float-3 22s ease-in-out infinite; }
+
+.cnode:nth-child(1) { animation-delay: 0s; }
+.cnode:nth-child(2) { animation-delay: -8s; }
+.cnode:nth-child(3) { animation-delay: -3s; }
+.cnode:nth-child(4) { animation-delay: -12s; }
+.cnode:nth-child(5) { animation-delay: -19s; }
+.cnode:nth-child(6) { animation-delay: -6s; }
+.cnode:nth-child(7) { animation-delay: -15s; }
+.cnode:nth-child(8) { animation-delay: -22s; }
+.cnode:nth-child(9) { animation-delay: -10s; }
+.cnode:nth-child(10) { animation-delay: -4s; }
+.cnode:nth-child(11) { animation-delay: -17s; }
+
+.cnode:hover { animation-play-state: paused; }
+
+/* ============================
+   Pill toggle — bottom of viewport
+   ============================ */
+.pill-toggle {
+  position: fixed;
+  bottom: 3vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  overflow: hidden;
+  background: rgba(26, 26, 26, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 0;
+}
+
+.pill-toggle-track {
+  position: relative;
+  display: flex;
+}
+
+.pill-slider {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 0;
+  background: rgba(255,255,255,0.06);
+  transition: transform 0.3s ease, width 0.3s ease;
+  pointer-events: none;
+}
+
+.pill-option {
+  padding: 8px 18px;
+  font-size: 11px;
+  cursor: pointer;
+  color: rgba(136, 136, 136, 0.7);
+  transition: color 0.2s ease;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  user-select: none;
+  position: relative;
+  z-index: 1;
+  white-space: nowrap;
+}
+
+.pill-option:hover { color: var(--fg); }
+.pill-option.active { color: var(--fg); }
+
+/* ============================
+   Nav
+   ============================ */
+.site-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 0 32px;
+  background: rgba(10,10,10,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.site-nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 56px;
+}
+
+.site-nav-logo {
+  font-family: 'Source Serif 4', serif;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  color: #e8e8e8;
+  text-decoration: none;
+}
+
+.site-nav-links {
+  display: flex;
+  gap: 24px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.site-nav-links a {
+  color: #888;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+/* ============================
+   Footer — below viewport, scroll to reach
+   ============================ */
+.footer {
+  position: relative;
+  z-index: 1;
+  background: var(--bg);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 4vh 8vw;
+}
+
+.footer-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4vw;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-col h3 {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgba(136, 136, 136, 0.7);
+  font-weight: 600;
+  margin-bottom: 2em;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.footer-col ul { list-style: none; }
+
+.footer-col li {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 2.2;
+  color: rgba(232, 232, 232, 0.7);
+  transition: color 0.2s ease;
+}
+
+.footer-col li:hover { color: var(--fg); }
+.footer-col li a:hover { opacity: 1; color: var(--fg); }
+
+.colophon {
+  max-width: 1200px;
+  margin: 4vh auto 0;
+  padding-top: 2vh;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  font-size: 12px;
+  color: rgba(136, 136, 136, 0.4);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ============================
+   Responsive — mobile collapses to scrollable list
+   ============================ */
+@media (max-width: 768px) {
+  .constellation-page {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+
+  .constellation {
+    position: relative;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 120px 20px 80px;
+  }
+
+  .page-title {
+    position: relative;
+    top: auto; left: auto;
+    transform: none;
+    padding: 80px 20px 0;
+  }
+
+  .cnode {
+    position: static !important;
+    animation: none !important;
+  }
+
+  .cnode-img {
+    width: 64px;
+    height: 42px;
+  }
+
+  .track-label { display: none; }
+
+  #flow-canvas { display: none; }
+
+  .constellation.has-hover .cnode { opacity: 1; }
+
+  .footer-columns {
+    grid-template-columns: 1fr;
+    gap: 4vh;
+  }
+
+  .pill-toggle { bottom: 2vh; }
 }
 </style>
 </head>
 <body>
 
-<!-- ── Header ── -->
-<header class="site-header reveal">
-  <h1 class="site-title">Latent States</h1>
-  <p class="site-tagline">The hidden worlds within us</p>
-</header>
+<!-- Nav -->
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a href="index.html" class="site-nav-logo">LS</a>
+    <div class="site-nav-links">
+      <a href="people/index.html">People</a>
+      <a href="about/index.html">About</a>
+    </div>
+  </div>
+</nav>
 
-<!-- ── Intro ── -->
-<section class="intro reveal">
-  <div class="intro-inner">
-    <p>Latent States is a collaboration between artists, scientists, and technologists based at the Champalimaud Foundation, Lisbon. We build installations, stage encounters between humans and machines, and run experiments in perception at festivals, galleries, and warehouses.</p>
+<!-- ================================
+     SINGLE VIEWPORT: Title + Constellation
+     ================================ -->
+<section class="constellation-page" id="constellation-page">
+  <canvas id="flow-canvas"></canvas>
+
+  <div class="page-title">
+    <h1>What is it like<br>to experience?</h1>
+    <p>Yourself. Another person. A forest. A machine.</p>
+  </div>
+
+  <div class="constellation">
+    <!-- Faint track labels -->
+    <span class="track-label track-states">States</span>
+    <span class="track-label track-spaces">Spaces</span>
+
+    <!-- Origins — top center area -->
+    <a class="cnode" href="psiloscope/index.html" data-tag="origins" style="left:18%;top:32%">
+      <img class="cnode-img" src="assets/psiloscope-dance.png" alt="Psiloscope"><div class="cnode-text"><span class="cnode-cat">COLLECTIVE MOTION LAB</span><span class="cnode-title">Psiloscope</span><span class="cnode-year">2016</span></div>
+    </a>
+    <a class="cnode" href="mindcrystal/index.html" data-tag="origins" style="left:45%;top:28%">
+      <div class="cnode-img" style="background:var(--bg);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.2);">2018</div><div class="cnode-text"><span class="cnode-cat">COLLECTIVE MOTION LAB</span><span class="cnode-title">MindCrystal</span><span class="cnode-year">2018</span></div>
+    </a>
+    <a class="cnode" href="human-open-field/index.html" data-tag="origins" style="left:72%;top:34%">
+      <img class="cnode-img" src="assets/human-open-field-hero.jpg"><div class="cnode-text"><span class="cnode-cat">OPEN-AIR EXPERIMENT</span><span class="cnode-title">Human Open Field</span><span class="cnode-year">2019</span></div>
+    </a>
+
+    <!-- States — left side -->
+    <a class="cnode" href="lsc/index.html" data-tag="states" style="left:12%;top:52%">
+      <img class="cnode-img" src="assets/seeing-1.jpg"><div class="cnode-text"><span class="cnode-cat">FIELD STUDY</span><span class="cnode-title">Latent States Camp</span><span class="cnode-year">2023&ndash;</span></div>
+    </a>
+
+    <!-- Spaces — right side -->
+    <a class="cnode" href="polylith/index.html" data-tag="spaces" style="left:62%;top:44%">
+      <img class="cnode-img" src="assets/cf-metamersion-polylith.png"><div class="cnode-text"><span class="cnode-cat">BRAIN-DRIVEN INSTALLATION</span><span class="cnode-title">Polylith</span><span class="cnode-year">2022</span></div>
+    </a>
+    <a class="cnode" href="atavic-forest/index.html" data-tag="spaces" style="left:78%;top:50%">
+      <img class="cnode-img" src="assets/cf-metamersion-ls-atavic-forest.jpg"><div class="cnode-text"><span class="cnode-cat">BRAIN-DRIVEN INSTALLATION</span><span class="cnode-title">Atavic Forest</span><span class="cnode-year">2022</span></div>
+    </a>
+    <a class="cnode" href="ls1/index.html" data-tag="spaces" style="left:65%;top:58%">
+      <img class="cnode-img" src="assets/cf-metamersion-ls-latent-space-i.jpg"><div class="cnode-text"><span class="cnode-cat">BRAIN-DRIVEN INSTALLATION</span><span class="cnode-title">Latent Space I</span><span class="cnode-year">2022</span></div>
+    </a>
+    <a class="cnode" href="palimpsest/index.html" data-tag="spaces" style="left:82%;top:64%">
+      <img class="cnode-img" src="assets/cf-metamersion-ls-palimpsest.png"><div class="cnode-text"><span class="cnode-cat">BRAIN-DRIVEN INSTALLATION</span><span class="cnode-title">Palimpsest</span><span class="cnode-year">2023</span></div>
+    </a>
+    <!-- Bridge — center -->
+    <a class="cnode" href="altered-reflections/index.html" data-tag="states spaces" style="left:35%;top:62%">
+      <img class="cnode-img" src="assets/cf-metamersion-ha-altered-reflexions.jpg"><div class="cnode-text"><span class="cnode-cat">MIRROR STUDY</span><span class="cnode-title">Altered Reflections</span><span class="cnode-year">2024</span></div>
+    </a>
+    <a class="cnode" href="submersion/index.html" data-tag="states spaces" style="left:45%;top:74%">
+      <img class="cnode-img" src="assets/cf-metamersion-ha-submersion.jpeg"><div class="cnode-text"><span class="cnode-cat">SENSORY DEPRIVATION</span><span class="cnode-title">Submersion</span><span class="cnode-year">2024</span></div>
+    </a>
   </div>
 </section>
 
-<!-- ── Mosaic ── -->
-<section class="mosaic reveal">
-
-  <!-- Row 1: wide LS1 + 2 squares -->
-  <a href="ls1/" class="mosaic-item featured" data-project="ls1">
-    <img src="assets/mosaic/wide-ls1-whale.jpg" alt="Latent Space I — AI whale floating through forest canopy" loading="lazy">
-    <div class="mosaic-overlay"><h3>Latent Space I</h3><span>AI-driven VR film</span></div>
-  </a>
-  <a href="atavic-forest/" class="mosaic-item" data-project="atavic-forest">
-    <img src="assets/mosaic/thumb-af-thermal.jpg" alt="Atavic Forest — thermal fire generative landscape" loading="lazy">
-    <div class="mosaic-overlay"><h3>Atavic Forest</h3><span>Generative installation</span></div>
-  </a>
-  <a href="superficie/" class="mosaic-item" data-project="superficie">
-    <img src="assets/mosaic/thumb-sup-047.jpg" alt="Superficie Desordem — projected body-scan figure" loading="lazy">
-    <div class="mosaic-overlay"><h3>Superf&iacute;cie Desordem</h3><span>Live A/V</span></div>
-  </a>
-
-  <!-- Row 2: 2 squares + wide Atavic -->
-  <a href="ls1/" class="mosaic-item" data-project="ls1">
-    <img src="assets/mosaic/thumb-ls1-dark-eyes.jpg" alt="Latent Space I — dark eyes close-up portrait" loading="lazy">
-    <div class="mosaic-overlay"><h3>Latent Space I</h3><span>Film still</span></div>
-  </a>
-  <a href="lsc/" class="mosaic-item" data-project="lsc">
-    <img src="assets/mosaic/thumb-camp-tasting.jpg" alt="Latent States Camp — tasting experiment" loading="lazy">
-    <div class="mosaic-overlay"><h3>LS Camp</h3><span>Science in the wild</span></div>
-  </a>
-  <a href="atavic-forest/" class="mosaic-item featured" data-project="atavic-forest">
-    <img src="assets/mosaic/wide-af-alien-veg.jpg" alt="Atavic Forest — alien vegetation with purple smoke" loading="lazy">
-    <div class="mosaic-overlay"><h3>Atavic Forest</h3><span>Mucho Flow generative</span></div>
-  </a>
-
-  <!-- Row 3: wide Camp + 2 squares -->
-  <a href="lsc/" class="mosaic-item featured" data-project="lsc">
-    <img src="assets/mosaic/wide-camp-portal.jpg" alt="Latent States Camp — illuminated entrance portal at night" loading="lazy">
-    <div class="mosaic-overlay"><h3>Latent States Camp</h3><span>Waking Life 2023</span></div>
-  </a>
-  <a href="ls1/" class="mosaic-item" data-project="ls1">
-    <img src="assets/mosaic/thumb-ls1-sintra.jpg" alt="Latent Space I — figure with mirror in Sintra forest" loading="lazy">
-    <div class="mosaic-overlay"><h3>Latent Space I</h3><span>Sintra shoot</span></div>
-  </a>
-  <a href="atavic-forest/" class="mosaic-item" data-project="atavic-forest">
-    <img src="assets/mosaic/thumb-af-mycelium.jpg" alt="Atavic Forest — toxic mycelium macro" loading="lazy">
-    <div class="mosaic-overlay"><h3>Atavic Forest</h3><span>Generative</span></div>
-  </a>
-
-  <!-- Row 4: 4 squares -->
-  <a href="ls1/" class="mosaic-item" data-project="ls1">
-    <img src="assets/mosaic/thumb-ls1-ocean.jpg" alt="Latent Space I — figure facing the ocean" loading="lazy">
-    <div class="mosaic-overlay"><h3>Latent Space I</h3><span>Film still</span></div>
-  </a>
-  <a href="superficie/" class="mosaic-item" data-project="superficie">
-    <img src="assets/mosaic/thumb-sup-024.jpg" alt="Superficie Desordem — live performance" loading="lazy">
-    <div class="mosaic-overlay"><h3>Superf&iacute;cie Desordem</h3><span>Champalimaud</span></div>
-  </a>
-  <a href="ls1/" class="mosaic-item" data-project="ls1">
-    <img src="assets/mosaic/thumb-ls1-beautiful.jpg" alt="Latent Space I — portrait at coastline" loading="lazy">
-    <div class="mosaic-overlay"><h3>Latent Space I</h3><span>Film still</span></div>
-  </a>
-  <a href="atavic-forest/" class="mosaic-item" data-project="atavic-forest">
-    <img src="assets/mosaic/thumb-af-spores.jpg" alt="Atavic Forest — reactor spores" loading="lazy">
-    <div class="mosaic-overlay"><h3>Atavic Forest</h3><span>Generative</span></div>
-  </a>
-
-  <!-- Row 5: 2 squares + wide Superficie -->
-  <a href="ls1/" class="mosaic-item" data-project="ls1">
-    <img src="assets/mosaic/thumb-ls1-mirror.jpg" alt="Latent Space I — figure and reflection" loading="lazy">
-    <div class="mosaic-overlay"><h3>Latent Space I</h3><span>Film still</span></div>
-  </a>
-  <a href="lsc/" class="mosaic-item" data-project="lsc">
-    <img src="assets/mosaic/thumb-camp-seeing.jpg" alt="Latent States Camp — VR seeing experiment" loading="lazy">
-    <div class="mosaic-overlay"><h3>LS Camp</h3><span>Seeing</span></div>
-  </a>
-  <a href="superficie/" class="mosaic-item featured" data-project="superficie">
-    <img src="assets/mosaic/wide-sup-012.jpg" alt="Superficie Desordem — projected body with audience silhouettes" loading="lazy">
-    <div class="mosaic-overlay"><h3>Superf&iacute;cie Desordem</h3><span>Live A/V performance</span></div>
-  </a>
-
-  <!-- Row 6: 4 squares -->
-  <a href="atavic-forest/" class="mosaic-item" data-project="atavic-forest">
-    <img src="assets/mosaic/thumb-af-night.jpg" alt="Atavic Forest — night forest" loading="lazy">
-    <div class="mosaic-overlay"><h3>Atavic Forest</h3><span>Generative</span></div>
-  </a>
-  <a href="ls1/" class="mosaic-item" data-project="ls1">
-    <img src="assets/mosaic/thumb-ls1-sandcastle.jpg" alt="Latent Space I — AI sand castle" loading="lazy">
-    <div class="mosaic-overlay"><h3>Latent Space I</h3><span>AI dream</span></div>
-  </a>
-  <a href="lsc/" class="mosaic-item" data-project="lsc">
-    <img src="assets/mosaic/thumb-camp-submersion.jpg" alt="Latent States Camp — submersion experiment" loading="lazy">
-    <div class="mosaic-overlay"><h3>LS Camp</h3><span>Submersion</span></div>
-  </a>
-  <a href="ls1/" class="mosaic-item" data-project="ls1">
-    <img src="assets/mosaic/thumb-ls1-siori-03.jpg" alt="Latent Space I — Siori Lee portrait" loading="lazy">
-    <div class="mosaic-overlay"><h3>Latent Space I</h3><span>Siori Lee</span></div>
-  </a>
-
-  <!-- Row 7: remaining -->
-  <a href="superficie/" class="mosaic-item" data-project="superficie">
-    <img src="assets/mosaic/thumb-sup-040.jpg" alt="Superficie Desordem — performance moment" loading="lazy">
-    <div class="mosaic-overlay"><h3>Superf&iacute;cie Desordem</h3><span>Live A/V</span></div>
-  </a>
-  <a href="atavic-forest/" class="mosaic-item" data-project="atavic-forest">
-    <img src="assets/mosaic/thumb-af-portal.jpg" alt="Atavic Forest — tube portal" loading="lazy">
-    <div class="mosaic-overlay"><h3>Atavic Forest</h3><span>Generative</span></div>
-  </a>
-  <a href="boom/" class="mosaic-item" data-project="boom">
-    <img src="assets/mosaic/thumb-boom.jpg" alt="Boom Festival — where it started" loading="lazy">
-    <div class="mosaic-overlay"><h3>Boom Festival</h3><span>2016, 2018</span></div>
-  </a>
-  <a href="psiloscope/" class="mosaic-item" data-project="psiloscope">
-    <img src="assets/mosaic/thumb-psiloscope-01.jpg" alt="Psiloscope — wireless motion sensors at Boom" loading="lazy">
-    <div class="mosaic-overlay"><h3>Psiloscope</h3><span>Motion sensing</span></div>
-  </a>
-
-  <!-- Row 8: closing -->
-  <a href="ls1/" class="mosaic-item" data-project="ls1">
-    <img src="assets/mosaic/thumb-ls1-cube.jpg" alt="Latent Space I — the cube" loading="lazy">
-    <div class="mosaic-overlay"><h3>Latent Space I</h3><span>Film still</span></div>
-  </a>
-  <a href="lsc/" class="mosaic-item" data-project="lsc">
-    <img src="assets/mosaic/thumb-camp-crowd.jpg" alt="Latent States Camp — camp at night" loading="lazy">
-    <div class="mosaic-overlay"><h3>LS Camp</h3><span>Festival</span></div>
-  </a>
-  <a href="psiloscope/" class="mosaic-item" data-project="psiloscope">
-    <img src="assets/mosaic/thumb-psiloscope-02.jpg" alt="Psiloscope — geodesic sensor dome at Boom Festival" loading="lazy">
-    <div class="mosaic-overlay"><h3>Psiloscope</h3><span>Boom 2016</span></div>
-  </a>
-  <a href="psiloscope/" class="mosaic-item" data-project="psiloscope">
-    <img src="assets/mosaic/thumb-psiloscope-03.jpg" alt="Psiloscope — projected visualization" loading="lazy">
-    <div class="mosaic-overlay"><h3>Psiloscope</h3><span>Visualization</span></div>
-  </a>
-
-</section>
-
-<!-- ── Project list ── -->
-<section class="projects reveal">
-  <div class="projects-inner">
-    <div class="projects-label">Works &amp; Programmes</div>
-    <ul class="projects-list">
-      <li><a href="superficie/">Superf&iacute;cie Desordem<span class="year">2024</span></a></li>
-      <li><a href="lsc/">Latent States Camp<span class="year">2023&ndash;</span></a></li>
-      <li><a href="ls1/">Latent Space I<span class="year">2022&ndash;23</span></a></li>
-      <li><a href="atavic-forest/">Atavic Forest<span class="year">2022&ndash;23</span></a></li>
-      <li><a href="palimpsest/">Palimpsest<span class="year">2022</span></a></li>
-      <li><a href="polylith/">Polylith<span class="year">2022</span></a></li>
-      <li><a href="metamersion/">Metamersion<span class="year">2022&ndash;23</span></a></li>
-      <li><a href="mindcrystal/">MindCrystal<span class="year">2018</span></a></li>
-      <li><a href="psiloscope/">Psiloscope<span class="year">2016</span></a></li>
-      <li><a href="boom/">Boom Festival<span class="year">2016, 2018</span></a></li>
-    </ul>
+<!-- Pill toggle -->
+<div class="pill-toggle" id="pill-toggle">
+  <div class="pill-toggle-track" id="pill-track">
+    <div class="pill-slider" id="pill-slider"></div>
+    <div class="pill-option active" data-filter="all">All</div>
+    <div class="pill-option" data-filter="origins">Origins</div>
+    <div class="pill-option" data-filter="states">States</div>
+    <div class="pill-option" data-filter="spaces">Spaces</div>
   </div>
-</section>
+</div>
 
-<!-- ── Footer ── -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-brand">LS</div>
-    <p class="footer-line"><strong>Lunar Ring</strong><br>Alexander Loktyushin, Johannes Stelzer, Fatemeh Molaei Vaneghi, Gonçalo Guiomar, Zachary Mainen</p>
-    <p class="footer-line"><strong>Artists &amp; Sound</strong><br>Jonathan Uliel Saldanha, André Gonçalves, Octavian Mot &amp; Cristina Stefan (mots), Tupac Martir</p>
-    <p class="footer-line"><strong>Scientists</strong><br>Romain Ligneul, Maria Machado, Giorgio Gristina, Eric Lacosse, Scott Rennie, Razvan Sandru</p>
-    <p class="footer-line"><strong>Technology</strong><br>Gonçalo Lopes, Filipe Rodrigues</p>
-    <p class="footer-line" style="margin-top: 12px;"><a href="mailto:latentstates@gmail.com">latentstates@gmail.com</a></p>
-    <p class="footer-line" style="margin-top: 8px;"><a href="people/">People</a> &middot; <a href="talks/">Talks</a> &middot; <a href="about/">About</a></p>
-    <p class="footer-close">Identity &middot; Perception &middot; Reality</p>
+<!-- Footer — below viewport -->
+<footer class="footer">
+  <div class="footer-columns">
+    <div class="footer-col">
+      <h3>Works</h3>
+      <ul>
+        <li><a href="psiloscope/index.html">Psiloscope</a></li>
+        <li><a href="mindcrystal/index.html">MindCrystal</a></li>
+        <li>Human Open Field</li>
+        <li><a href="polylith/index.html">Polylith</a></li>
+        <li><a href="atavic-forest/index.html">Atavic Forest</a></li>
+        <li><a href="ls1/index.html">Latent Space I</a></li>
+        <li><a href="palimpsest/index.html">Palimpsest</a></li>
+        <li><a href="lsc/index.html">Latent States Camp</a></li>
+        <li>Altered Reflections</li>
+        <li>Submersion</li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Partners</h3>
+      <ul>
+        <li><a href="boom/index.html">Boom Festival</a></li>
+        <li><a href="waking-life/index.html">Waking Life Festival</a></li>
+        <li>Champalimaud Foundation</li>
+        <li>Lunar Ring</li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>More</h3>
+      <ul>
+        <li><a href="people/">People</a></li>
+        <li><a href="about/">About</a></li>
+      </ul>
+    </div>
   </div>
+  <div class="colophon">Latent States &middot; Lisbon &middot; 2016&ndash;present</div>
 </footer>
 
 <script>
-(function(){
-  var els = document.querySelectorAll('.reveal');
-  if (!('IntersectionObserver' in window)) {
-    els.forEach(function(el) { el.classList.add('shown'); });
-    return;
-  }
-  var observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('shown');
-        observer.unobserve(entry.target);
-      }
+// =============================================
+// River flow field — particles between project nodes
+// =============================================
+const canvas = document.getElementById('flow-canvas');
+const ctx = canvas.getContext('2d');
+
+const NODES = {
+  psiloscope:  [0.18, 0.32],
+  mindcrystal: [0.45, 0.28],
+  hof:         [0.72, 0.34],
+  lsc:         [0.12, 0.52],
+  polylith:    [0.62, 0.44],
+  atavic:      [0.78, 0.50],
+  ls1:         [0.65, 0.58],
+  palimpsest:  [0.82, 0.64],
+  altered:     [0.35, 0.62],
+  submersion:  [0.45, 0.74]
+};
+
+const CONNECTIONS = [
+  ['psiloscope', 'mindcrystal'],
+  ['mindcrystal', 'hof'],
+  ['hof', 'lsc'],
+  ['mindcrystal', 'polylith'],
+  ['hof', 'polylith'],
+  ['polylith', 'atavic'],
+  ['atavic', 'ls1'],
+  ['ls1', 'palimpsest'],
+  ['palimpsest', 'altered'],
+  ['lsc', 'altered'],
+  ['palimpsest', 'submersion'],
+  ['lsc', 'submersion']
+];
+
+const COLORS = ['#8a8a8a','#a0a0a0','#b0b0b0','#787878','#c0c0c0'];
+const PARTICLES_PER_CONN = 6;
+
+let W, H, dpr;
+const pageEl = document.querySelector('.constellation-page');
+let mouse = { x: -9999, y: -9999 };
+
+function resize() {
+  dpr = Math.min(devicePixelRatio || 1, 2);
+  W = pageEl.offsetWidth;
+  H = pageEl.offsetHeight;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+window.addEventListener('resize', resize);
+resize();
+window.addEventListener('load', () => { resize(); curves = buildCurves(); });
+
+document.addEventListener('mousemove', e => {
+  const rect = pageEl.getBoundingClientRect();
+  mouse.x = e.clientX - rect.left;
+  mouse.y = e.clientY - rect.top;
+});
+document.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+document.addEventListener('touchmove', e => {
+  const rect = pageEl.getBoundingClientRect();
+  const touch = e.touches[0];
+  mouse.x = touch.clientX - rect.left;
+  mouse.y = touch.clientY - rect.top;
+}, { passive: true });
+
+function buildCurves() {
+  return CONNECTIONS.map(([srcKey, tgtKey], i) => {
+    const src = NODES[srcKey], tgt = NODES[tgtKey];
+    const sx = src[0] * W, sy = src[1] * H;
+    const tx = tgt[0] * W, ty = tgt[1] * H;
+    const mx = (sx + tx) / 2, my = (sy + ty) / 2;
+    const dx = tx - sx, dy = ty - sy;
+    const len = Math.sqrt(dx * dx + dy * dy);
+    const perpX = -dy / len, perpY = dx / len;
+    const sign = (i % 2 === 0) ? 1 : -1;
+    const offset = len * 0.3 * sign;
+    return { sx, sy, tx, ty, cx: mx + perpX * offset, cy: my + perpY * offset };
+  });
+}
+
+let curves = buildCurves();
+window.addEventListener('resize', () => { curves = buildCurves(); });
+
+let particles = [];
+CONNECTIONS.forEach((_, ci) => {
+  for (let i = 0; i < PARTICLES_PER_CONN; i++) {
+    particles.push({
+      ci,
+      t: Math.random(),
+      speed: 0.0005 + Math.random() * 0.0015,
+      wobblePhase: Math.random() * Math.PI * 2,
+      wobbleFreq: 2 + Math.random() * 3,
+      lateralOffset: (Math.random() - 0.5) * 30,
+      color: COLORS[(Math.random() * COLORS.length) | 0]
     });
-  }, { threshold: 0.1 });
-  els.forEach(function(el) { observer.observe(el); });
-})();
+  }
+});
+
+function bezierPoint(c, t) {
+  const u = 1 - t;
+  return {
+    x: u * u * c.sx + 2 * u * t * c.cx + t * t * c.tx,
+    y: u * u * c.sy + 2 * u * t * c.cy + t * t * c.ty
+  };
+}
+
+function bezierTangent(c, t) {
+  const u = 1 - t;
+  return {
+    x: 2 * u * (c.cx - c.sx) + 2 * t * (c.tx - c.cx),
+    y: 2 * u * (c.cy - c.sy) + 2 * t * (c.ty - c.cy)
+  };
+}
+
+function frame() {
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#0a0a0a';
+  ctx.fillRect(0, 0, W, H);
+
+  for (let i = 0; i < particles.length; i++) {
+    const p = particles[i];
+    const c = curves[p.ci];
+
+    p.t += p.speed;
+    if (p.t >= 1) {
+      p.t = 0;
+      p.wobblePhase = Math.random() * Math.PI * 2;
+    }
+
+    const pos = bezierPoint(c, p.t);
+    const tan = bezierTangent(c, p.t);
+    const tanLen = Math.sqrt(tan.x * tan.x + tan.y * tan.y) || 1;
+    const nx = -tan.y / tanLen, ny = tan.x / tanLen;
+    const wobble = Math.sin(p.t * p.wobbleFreq * Math.PI * 2 + p.wobblePhase) * 20 + p.lateralOffset;
+
+    let finalX = pos.x + nx * wobble;
+    let finalY = pos.y + ny * wobble;
+
+    if (mouse.x > 0 && mouse.y > 0) {
+      let dx = mouse.x - finalX;
+      let dy = mouse.y - finalY;
+      let dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 350 && dist > 5) {
+        let strength = Math.min(25 / (dist * 0.3), 50);
+        finalX += dx / dist * strength;
+        finalY += dy / dist * strength;
+      }
+    }
+
+    let alpha = 1;
+    if (p.t < 0.05) alpha = p.t / 0.05;
+    else if (p.t > 0.92) alpha = (1 - p.t) / 0.08;
+
+    ctx.beginPath();
+    ctx.arc(finalX, finalY, 3, 0, Math.PI * 2);
+    ctx.fillStyle = p.color;
+    ctx.globalAlpha = 0.08 * alpha;
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(finalX, finalY, 1.5, 0, Math.PI * 2);
+    ctx.fillStyle = p.color;
+    ctx.globalAlpha = 0.5 * alpha;
+    ctx.fill();
+  }
+
+  ctx.globalAlpha = 1;
+  requestAnimationFrame(frame);
+}
+
+ctx.fillStyle = '#0a0a0a';
+ctx.fillRect(0, 0, W, H);
+requestAnimationFrame(frame);
+
+// Constellation dimming
+const constellation = document.querySelector('.constellation');
+document.querySelectorAll('.cnode').forEach(node => {
+  node.addEventListener('mouseenter', () => constellation.classList.add('has-hover'));
+  node.addEventListener('mouseleave', () => constellation.classList.remove('has-hover'));
+});
+
+// =============================================
+// Pill toggle — filter constellation nodes
+// =============================================
+const constellationNodes = document.querySelectorAll('.cnode');
+const pillToggle = document.getElementById('pill-toggle');
+const pillOptions = document.querySelectorAll('.pill-option');
+const pillSlider = document.getElementById('pill-slider');
+let activeFilter = 'all';
+
+function updateSlider() {
+  const active = document.querySelector('.pill-option.active');
+  if (!active) return;
+  pillSlider.style.width = active.offsetWidth + 'px';
+  pillSlider.style.transform = `translateX(${active.offsetLeft}px)`;
+}
+
+function filterProjects(filter) {
+  activeFilter = filter;
+  constellationNodes.forEach(node => {
+    const tag = node.dataset.tag;
+    if (filter === 'all') {
+      node.classList.remove('filtered-out');
+    } else if (tag && tag.includes(filter)) {
+      node.classList.remove('filtered-out');
+    } else {
+      node.classList.add('filtered-out');
+    }
+  });
+}
+
+pillOptions.forEach(pill => {
+  pill.addEventListener('click', () => {
+    pillOptions.forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    updateSlider();
+    filterProjects(pill.dataset.filter);
+  });
+});
+
+window.addEventListener('load', updateSlider);
+requestAnimationFrame(updateSlider);
 </script>
+
 </body>
 </html>
