@@ -9,23 +9,21 @@
 <meta property="og:description" content="Artists, scientists, and organisers behind the Latent States projects.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --bg: #101012;
-  --bg-surface: #18181a;
-  --border: #252528;
-  --text-primary: #d8d8dc;
-  --text-secondary: #a0a0a8;
-  --text-muted: #707078;
-  --accent: #8090a0;
-  --accent-alt: #a0a8b0;
-  --font-heading: 'Syne', sans-serif;
-  --font-body: 'Space Grotesk', sans-serif;
+  --bg: #f5f3ef;
+  --bg-surface: #eae7e1;
+  --border: #d0ccc4;
+  --text-primary: #1a1a1a;
+  --text-secondary: #4a4a4a;
+  --text-muted: #7a7a7a;
+  --accent: #5a6a7a;
+  --accent-alt: #3a4a5a;
+  --font-serif: 'Source Serif 4', Georgia, serif;
   --content-width: 720px;
-  --page-width: 1200px;
 }
 
 html { scroll-behavior: smooth; }
@@ -33,7 +31,7 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--text-primary);
-  font-family: var(--font-body);
+  font-family: var(--font-serif);
   font-weight: 300;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
@@ -53,13 +51,13 @@ nav {
   align-items: center;
   justify-content: space-between;
   padding: 0 32px;
-  background: rgba(16, 16, 18, 0.8);
+  background: rgba(245, 243, 239, 0.9);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
 }
 .nav-logo {
-  font-family: var(--font-heading);
+  font-family: var(--font-serif);
   font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -67,8 +65,8 @@ nav {
 }
 .nav-links { display: flex; gap: 24px; }
 .nav-links a {
-  font-family: var(--font-body);
-  font-size: 13px;
+  font-family: var(--font-serif);
+  font-size: 14px;
   font-weight: 400;
   color: var(--text-secondary);
   letter-spacing: 0.02em;
@@ -83,70 +81,48 @@ nav {
 
 .hero-info {
   padding-top: 64px;
-  padding-bottom: 80px;
+  padding-bottom: 48px;
 }
 .hero-info h1 {
-  font-family: var(--font-heading);
-  font-size: 56px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
-  color: var(--text-primary);
-  margin-bottom: 16px;
-}
-
-.text-section {
-  padding-top: 0;
-  padding-bottom: 80px;
-}
-.text-section h2 {
-  font-family: var(--font-heading);
-  font-size: 28px;
+  font-family: var(--font-serif);
+  font-size: 48px;
   font-weight: 700;
   letter-spacing: -0.02em;
+  line-height: 1.1;
   color: var(--text-primary);
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+}
+.hero-info p {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 540px;
 }
 
-.group { margin-bottom: 56px; }
-.group-label {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 11px;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--text-muted);
+.people-list {
+  padding-bottom: 80px;
+}
+
+.person {
   margin-bottom: 24px;
-  padding-bottom: 12px;
+  padding-bottom: 24px;
   border-bottom: 1px solid var(--border);
 }
-.group-desc {
-  font-size: 14px;
-  color: var(--text-secondary);
-  margin-bottom: 24px;
-}
+.person:last-child { border-bottom: none; }
 
-.person { margin-bottom: 20px; }
 .person-name {
-  font-size: 16px;
-  font-weight: 400;
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 600;
   color: var(--text-primary);
   margin-bottom: 2px;
 }
-.person-name a {
-  color: var(--text-primary);
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 1px;
-  transition: color 0.2s, border-color 0.2s;
-}
-.person-name a:hover { color: var(--accent); border-color: var(--accent); }
-.person-desc {
-  font-size: 14px;
+.person-role {
+  font-size: 15px;
   color: var(--text-secondary);
   margin-bottom: 4px;
 }
 .person-projects {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-muted);
 }
 .person-projects a {
@@ -156,17 +132,6 @@ nav {
   transition: color 0.2s, border-color 0.2s;
 }
 .person-projects a:hover { color: var(--text-primary); border-color: var(--accent); }
-
-.sub-label {
-  font-size: 14px;
-  color: var(--text-secondary);
-  margin-bottom: 16px;
-  margin-top: 20px;
-}
-.sub-label strong {
-  font-weight: 400;
-  color: var(--text-primary);
-}
 
 footer {
   padding: 48px 32px;
@@ -180,7 +145,7 @@ footer {
 @media (max-width: 768px) {
   nav { padding: 0 20px; }
   .hero-info h1 { font-size: 36px; }
-  .hero-info { padding-top: 48px; padding-bottom: 56px; }
+  .hero-info { padding-top: 48px; padding-bottom: 36px; }
   .section { padding: 0 16px; }
 }
 </style>
@@ -199,103 +164,161 @@ footer {
 
 <div class="section hero-info">
   <h1>People</h1>
+  <p>Artists, scientists, and organisers who have shaped the Latent States projects.</p>
 </div>
 
-<div class="section text-section">
+<div class="section people-list">
 
-  <div class="group">
-    <div class="group-label">Latent States</div>
-    <p class="group-desc">The people who make the work. Recurring across projects.</p>
-
-    <div class="person">
-      <div class="person-name">Zachary Mainen</div>
-      <div class="person-desc">Neuroscientist and artist</div>
-      <div class="person-projects"><a href="../psiloscope/index.html">Psiloscope</a>, <a href="../mindcrystal/index.html">MindCrystal</a>, <a href="../polylith/index.html">Polylith</a>, <a href="../ls1/index.html">LS1</a>, <a href="../lsc/index.html">Latent States Camp</a></div>
-    </div>
-
-    <div class="person">
-      <div class="person-name">Gon&ccedil;alo Guiomar</div>
-      <div class="person-desc">Neuroscientist and artist</div>
-      <div class="person-projects"><a href="../psiloscope/index.html">Psiloscope</a>, <a href="../mindcrystal/index.html">MindCrystal</a>, <a href="../polylith/index.html">Polylith</a>, <a href="../atavic-forest/index.html">Atavic Forest</a>, <a href="../ls1/index.html">LS1</a></div>
-    </div>
-
-    <div class="person">
-      <div class="person-name">Giorgio Gristina</div>
-      <div class="person-desc">Producer / Project Manager</div>
-      <div class="person-projects"><a href="../lsc/index.html">LSC</a> (2023&ndash;2025)</div>
-    </div>
-
-    <div class="person">
-      <div class="person-name">Scott Rennie</div>
-      <div class="person-desc">Researcher</div>
-      <div class="person-projects"><a href="../lsc/index.html">LSC</a> (2023&ndash;2025), <a href="../palimpsest/index.html">Palimpsest</a></div>
-    </div>
-
-    <div class="person">
-      <div class="person-name">Razvan Sandru</div>
-      <div class="person-desc">Researcher</div>
-      <div class="person-projects"><a href="../lsc/index.html">LSC</a> (2023&ndash;2025), <a href="../palimpsest/index.html">Palimpsest</a></div>
-    </div>
-
-    <div class="person">
-      <div class="person-name">Maria Machado</div>
-      <div class="person-desc">Production / Logistics</div>
-      <div class="person-projects"><a href="../lsc/index.html">LSC</a> (2024&ndash;2025)</div>
-    </div>
+  <div class="person">
+    <h3 class="person-name">Correia, Patricia</h3>
+    <p class="person-role">Coordination &middot; Metamersion</p>
+    <p class="person-projects">Projects: <a href="../metamersion/index.html">Metamersion</a></p>
   </div>
 
-  <div class="group">
-    <div class="group-label">Lunar Ring</div>
-    <p class="group-desc">AI art collective. <a href="https://lunar-ring.ai">lunar-ring.ai</a></p>
-
-    <p class="sub-label"><strong>Founders</strong></p>
-    <div class="person">
-      <div class="person-name">Alexander Loktyushin, Johannes Stelzer, Niklas Fricke, Mirko Franji&cacute;</div>
-      <div class="person-projects"><a href="../atavic-forest/index.html">Atavic Forest</a>, <a href="../ls1/index.html">LS1</a>, Altered Reflections, Submersion</div>
-    </div>
-
-    <p class="sub-label"><strong>Members</strong></p>
-    <div class="person">
-      <div class="person-name">Gon&ccedil;alo Guiomar, Fatemeh Molaei, and Zachary Mainen</div>
-      <div class="person-projects"><a href="../atavic-forest/index.html">Atavic Forest</a>, <a href="../ls1/index.html">LS1</a></div>
-    </div>
+  <div class="person">
+    <h3 class="person-name">de Filippo, Roberto</h3>
+    <p class="person-role">Researcher &middot; Hearing (LSC)</p>
+    <p class="person-projects">Projects: <a href="../lsc/index.html">Latent States Camp</a></p>
   </div>
 
-  <div class="group">
-    <div class="group-label">Collaborators</div>
-    <p class="group-desc">People who brought specific expertise to specific projects.</p>
-
-    <div class="person">
-      <div class="person-name"><a href="https://jonathanuliel.com">Jonathan Uliel Saldanha</a></div>
-      <div class="person-desc">Composer, visual artist. SOOPA, HHY &amp; The Macumbas.</div>
-      <div class="person-projects"><a href="../atavic-forest/index.html">Atavic Forest</a></div>
-    </div>
-
-    <div class="person">
-      <div class="person-name">Tupac Martir</div>
-      <div class="person-desc">Satore Studio</div>
-      <div class="person-projects"><a href="../metamersion/index.html">Metamersion I</a>, <a href="../ls1/index.html">LS1</a></div>
-    </div>
-
-    <div class="person">
-      <div class="person-name">Andr&eacute; Gon&ccedil;alves</div>
-      <div class="person-desc">Sound artist</div>
-      <div class="person-projects"><a href="../polylith/index.html">Polylith</a>, <a href="../ls1/index.html">LS1</a></div>
-    </div>
-
-    <div class="person">
-      <div class="person-name">Eric Lacosse</div>
-      <div class="person-desc">Neuroscientist</div>
-      <div class="person-projects"><a href="../ls1/index.html">LS1</a>, <a href="../palimpsest/index.html">Palimpsest</a></div>
-    </div>
-
-    <div class="person">
-      <div class="person-name"><a href="https://mots.us">Octavian Mot &amp; Daniela Nedovescu</a></div>
-      <div class="person-desc">mots studio</div>
-      <div class="person-projects"><a href="../ls1/index.html">LS1</a></div>
-    </div>
-
+  <div class="person">
+    <h3 class="person-name">Dedyk, Zuzanna</h3>
+    <p class="person-role">Researcher &middot; Tasting (LSC)</p>
+    <p class="person-projects">Projects: <a href="../lsc/index.html">Latent States Camp</a></p>
   </div>
+
+  <div class="person">
+    <h3 class="person-name">Fricke, Niklas</h3>
+    <p class="person-role">Artist/Engineer &middot; Lunar Ring</p>
+    <p class="person-projects">Projects: <a href="../submersion/index.html">Submersion</a></p>
+  </div>
+
+  <div class="person">
+    <h3 class="person-name">Gon&ccedil;alves, Andr&eacute;</h3>
+    <p class="person-role">Interactive Sound</p>
+    <p class="person-projects">Projects: <a href="../polylith/index.html">Polylith</a>, <a href="../ls1/index.html">LS1</a></p>
+  </div>
+
+  <div class="person">
+    <h3 class="person-name">Gristina, Giorgio</h3>
+    <p class="person-role">Researcher</p>
+    <p class="person-projects">Projects: <a href="../lsc/index.html">Latent States Camp</a></p>
+  </div>
+
+  <div class="person">
+    <h3 class="person-name">Guiomar, Gon&ccedil;alo</h3>
+    <p class="person-role">Artist/Scientist &middot; Lunar Ring</p>
+    <p class="person-projects">Projects: <a href="../polylith/index.html">Polylith</a>, <a href="../atavic-forest/index.html">Atavic Forest</a>, <a href="../ls1/index.html">LS1</a></p>
+  </div>
+
+  <div class="person">
+    <h3 class="person-name">Koerner, Siori Lee</h3>
+    <p class="person-role">Lead Talent</p>
+    <p class="person-projects">Projects: <a href="../ls1/index.html">LS1</a></p>
+  </div>
+
+  <div class="person">
+    <h3 class="person-name">Krakauer, John</h3>
+    <p class="person-role">Curator &middot; Metamersion</p>
+    <p class="person-projects">Projects: <a href="../metamersion/index.html">Metamersion</a></p>
+  </div>
+
+  <div class="person">
+    <h3 class="person-name">Lacosse, Eric</h3>
+    <p class="person-role">Neuroscience/ML</p>
+    <p class="person-projects">Projects: <a href="../ls1/index.html">LS1</a></p>
+  </div>
+
+  <div class="person">
+    <h3 class="person-name">Loktyushin, Alexander</h3>
+    <p class="person-role">Artist/Engineer &middot; Lunar Ring</p>
+    <p class="person-projects">Projects: <a href="../atavic-forest/index.html">Atavic Forest</a>, <a href="../ls1/index.html">LS1</a>, <a href="../submersion/index.html">Submersion</a></p>
+  </div>
+
+  <div class="person">
+    <h3 class="person-name">Machado, Maria</h3>
+    <p class="person-role">Production</p>
+    <p class="person-projects">Projects: <a href="../lsc/index.html">Latent States Camp</a></p>
+  </div>
+
+  <div class="person">
+    <h3 class="person-name">Mainen, Zachary</h3>
+    <p class="person-role">Founder &middot; Latent States; Lunar Ring</p>
+    <p class="person-projects">Projects: all</p>
+  </div>
+
+  <div class="person">
+    <h3 class="person-name">Martir, Tupac</h3>
+    <p class="person-role">Lighting/VR &middot; Satore Studio</p>
+    <p class="person-projects">Projects: <a href="../ls1/index.html">LS1</a></p>
+  </div>
+
+  <div class="person">
+    <h3 class="person-name">Mot, Octavian</h3>
+    <p class="person-role">Film Director &middot; mots</p>
+    <p class="person-projects">Projects: <a href="../ls1/index.html">LS1</a></p>
+  </div>
+
+  <div class="person">
+    <h3 class="person-name">Neto, Lydia</h3>
+    <p class="person-role">Researcher &middot; Seeing (LSC)</p>
+    <p class="person-projects">Projects: <a href="../lsc/index.html">Latent States Camp</a></p>
+  </div>
+
+  <div class="person">
+    <h3 class="person-name">Ott, Torben</h3>
+    <p class="person-role">External Collaborator &middot; Hearing (LSC)</p>
+    <p class="person-projects">Projects: <a href="../lsc/index.html">Latent States Camp</a></p>
+  </div>
+
+  <div class="person">
+    <h3 class="person-name">Paton, Joe</h3>
+    <p class="person-role">Curator &middot; Metamersion</p>
+    <p class="person-projects">Projects: <a href="../metamersion/index.html">Metamersion</a></p>
+  </div>
+
+  <div class="person">
+    <h3 class="person-name">Rennie, Scott</h3>
+    <p class="person-role">Researcher</p>
+    <p class="person-projects">Projects: <a href="../lsc/index.html">Latent States Camp</a></p>
+  </div>
+
+  <div class="person">
+    <h3 class="person-name">Salaroli, Julia</h3>
+    <p class="person-role">Coordination &middot; Metamersion</p>
+    <p class="person-projects">Projects: <a href="../metamersion/index.html">Metamersion</a></p>
+  </div>
+
+  <div class="person">
+    <h3 class="person-name">Saldanha, Jonathan Uliel</h3>
+    <p class="person-role">Sound Composition</p>
+    <p class="person-projects">Projects: <a href="../atavic-forest/index.html">Atavic Forest</a></p>
+  </div>
+
+  <div class="person">
+    <h3 class="person-name">Sandru, Razvan</h3>
+    <p class="person-role">Researcher/Philosopher</p>
+    <p class="person-projects">Projects: Human Open Field, <a href="../lsc/index.html">Latent States Camp</a>, <a href="../ls1/index.html">LS1</a></p>
+  </div>
+
+  <div class="person">
+    <h3 class="person-name">Stefan, Cristina</h3>
+    <p class="person-role">Film Director &middot; mots</p>
+    <p class="person-projects">Projects: <a href="../ls1/index.html">LS1</a></p>
+  </div>
+
+  <div class="person">
+    <h3 class="person-name">Stelzer, Johannes</h3>
+    <p class="person-role">Artist/Engineer &middot; Lunar Ring</p>
+    <p class="person-projects">Projects: <a href="../atavic-forest/index.html">Atavic Forest</a>, <a href="../ls1/index.html">LS1</a></p>
+  </div>
+
+  <div class="person">
+    <h3 class="person-name">Taphorn, Anna</h3>
+    <p class="person-role">Artist &middot; Lunar Ring</p>
+    <p class="person-projects">Projects: <a href="../atavic-forest/index.html">Atavic Forest</a>, <a href="../ls1/index.html">LS1</a></p>
+  </div>
+
 </div>
 
 <footer>Latent States &middot; Lisbon</footer>
